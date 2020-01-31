@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- HTML Meta Tags -->
+	<title>xSROMap | Silkroad Online Map</title>
+	<link rel="icon" type="image/png" href="assets/img/xSROMap.png">
+	<meta name="author" content="JellyBitz">
+	<meta name="description" content="The easy way to explore the Silkroad Online world map.">
+	<meta name="keywords" content="silkroad online,xsromap,map,minimap,viewer,navigator,JellyBitz">
+	<!-- Google / Search Engine Tags -->
+	<meta itemprop="name" content="xSROMap">
+	<meta itemprop="description" content="The easy way to explore the Silkroad Online world map.">
+	<meta itemprop="image" content="assets/img/JellyBitz.png">
+	<!--- Facebook Meta Tags --->
+	<meta property="og:url" content="https://github.com/JellyBitz/xSROMap">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="xSROMap | Silkroad Online Map">
+	<meta property="og:description" content="The easy way to explore the Silkroad Online world map.">
+	<meta property="og:image" content="assets/img/JellyBitz.png">
+	<!--- Twitter Meta Tags --->
+	<meta name="twitter:title" content="xSROMap | Silkroad Online Map">
+	<meta name="twitter:description" content="The easy way to explore the Silkroad Online world map.">
+	<meta name="twitter:image" content="assets/img/JellyBitz.png">
+	<meta name="twitter:card" content="summary_large_image">
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" type="text/css" href="assets/fonts/font-awesome-5.11.1/css/all.min.css">
+	<!-- Leaflet -->
+	<link rel="stylesheet" type="text/css" href="assets/js/leaflet/Leaflet.css">
+	<link rel="stylesheet" type="text/css" href="assets/js/leaflet/Leaflet.PM.css">
+	<link rel="stylesheet" type="text/css" href="assets/js/leaflet/Leaflet.Easy-Button.css">
+	<!-- My style -->
+	<link rel="stylesheet" type="text/css" href="assets/css/main.css">
+</head>
+<body>
+	<div class="page-wrapper chiller-theme toggled">
+		<a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+			<i class="fas fa-bars"></i>
+		</a>
+		<nav id="sidebar" class="sidebar-wrapper">
+			<div class="sidebar-content">
+				<div class="sidebar-brand">
+					<a href="#"><span class="x-color">x</span>SROMap</a>
+					<span class="version"><span class="x-color">v</span>0.0.1</span>
+				</div>
+				<div class="sidebar-header">
+					<div class="user-pic">
+						<img class="img-responsive img-rounded" src="assets/img/JellyBitz.png"
+							alt="User picture">
+					</div>
+					<div class="user-info">
+						<span class="user-name"><strong>By JellyBitz</strong>
+						</span>
+						<span class="user-role">Engels Quintero</span>
+						<span class="user-status">
+							<i class="fab fa-discord"></i>
+							<span>JellyBitz#7643</span>
+						</span>
+					</div>
+				</div>
+				<!-- sidebar-menu  -->
+				<div class="sidebar-menu">
+					<ul>
+						<li class="header-menu">
+							<span>Extra info</span>
+						</li>
+						<li>
+							<a href="https://github.com/JellyBitz/xSROMap">
+								<i class="fa fa-book"></i>
+								<span>Installation</span>
+								<span class="badge badge-pill badge-warning">Not ready</span>
+							</a>
+						</li>
+						<li>
+							<a href="https://www.buymeacoffee.com/JellyBitz">
+								<i class="fa fa-mug-hot"></i>
+								<span>Support me!</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				<!-- sidebar-header  -->
+				<div class="sidebar-search">
+					<div>
+						<div class="input-group">
+							<input type="text" class="form-control search-menu" placeholder="Search...">
+							<div class="input-group-append">
+								<span class="input-group-text">
+									<i class="fa fa-search" aria-hidden="true"></i>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- sidebar-menu  -->
+				<div class="sidebar-menu">
+					<ul>
+						<li class="header-menu">
+							<span>Navigation</span>
+						</li>
+						<li class="sidebar-dropdown">
+							<a href="#">
+								<i class="fa fa-university"></i>
+								<span>Towns</span>
+								<!--span class="badge badge-pill badge-primary">New</span-->
+							</a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li>
+										<a href="#" onclick="xSROMap.SetView(6434,1044)">Jangan
+											<!--span class="badge badge-pill badge-success">Pro</span-->
+										</a>
+									</li>
+									<li>
+										<a href="#" onclick="xSROMap.SetView(3554,2112)">Donwhang</a>
+									</li>
+									<li>
+										<a href="#" onclick="xSROMap.SetView(114,47)">Hotan</a>
+									</li>
+									<li>
+										<a href="#" onclick="xSROMap.SetView(-5184,2889)">Samarkand</a>
+									</li>
+									<li>
+										<a href="#" onclick="xSROMap.SetView(-10681,2584)">Constantinople</a>
+									</li>
+									<li>
+										<a href="#" onclick="xSROMap.SetView(-16147,75)">Alexandria (North)</a>
+									</li>
+									<li>
+										<a href="#" onclick="xSROMap.SetView(-16641,-275)">Alexandria (South)</a>
+									</li>
+									<li>
+										<a href="#" onclick="xSROMap.SetView(-8525,-717)">Bahdag</a>
+									</li>
+								</ul>
+							</div>
+						</li>
+						<li class="sidebar-dropdown">
+							<a href="#">
+								<i class="far fa-globe-americas"></i>
+								<span>Areas</span>
+							</a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li>
+										<a href="#" onclick="xSROMap.SetView(0,0,0,32769)">Donwhang Stone Cave</a>
+									</li>
+									<li>
+										<a href="#" onclick="xSROMap.SetView(0,0,0,32775)">Qui-shi Tomb</a>
+									</li>
+									<li>
+										<a href="#" onclick="xSROMap.SetView(0,0,0,32784)">Pharaon Tomb</a>
+									</li>
+									<li>
+										<a href="#" onclick="xSROMap.SetView(0,0,0,32786)">Flame Mountain</a>
+									</li>
+								</ul>
+							</div>
+						</li>
+						<li class="sidebar-dropdown">
+							<a href="#">
+								<i class="fa fa-compass"></i>
+								<span>Zones</span>
+							</a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li>
+										<a href="#" onclick="xSROMap.SetView(-4608,0)">Mountain Roc</a>
+									</li>
+									<li>
+										<a href="#">...</a>
+									</li>
+								</ul>
+							</div>
+						</li>
+						<li class="sidebar-dropdown">
+							<a href="#">
+								<i class="fa fa-user-shield"></i>
+								<span title="Non Player Character">NPC's</span>
+								<!--span class="badge badge-pill badge-danger">3</span-->
+							</a>
+							<div class="sidebar-submenu">
+								<ul>
+									<li>
+										<a href="#">...</a>
+									</li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<!-- sidebar-menu  -->
+			</div>
+			<!-- sidebar-content  -->
+			<div class="sidebar-footer">
+				<!--a href="#">
+					<i class="fa fa-bell"></i>
+					<span class="badge badge-pill badge-warning notification">?</span>
+				</a>
+				<a href="#">
+					<i class="fa fa-envelope"></i>
+					<span class="badge badge-pill badge-success notification">?</span>
+				</a>
+				<a href="#">
+					<i class="fa fa-cog"></i>
+					<span class="badge-sonar"></span>
+				</a-->
+				<a id="close-sidebar" href="#">
+					<i class="fas fa-times"></i>
+				</a>
+			</div>
+		</nav>
+
+		<!-- sidebar-wrapper  -->
+		<main class="page-content">
+			<div class="container-fluid">
+				<div id="map"></div>
+			</div>
+		</main><!-- page-content" -->
+	</div><!-- page-wrapper -->
+
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	<!-- Leaflet -->
+	<script src="assets/js/leaflet/Leaflet.min.js"></script>
+	<script src="assets/js/leaflet/Leaflet.PM.min.js"></script>
+	<script src="assets/js/leaflet/Leaflet.Easy-Button.js"></script>
+	<!-- Main -->
+	<script src="assets/js/xSROMap.js"></script>
+	<script src="assets/js/main.js"></script>
+</body>
+</html>
