@@ -1,5 +1,5 @@
-# xSROMaps
-Easiest way to explore the [Silkroad](http://www.joymax.com/silkroad/) world map.
+# xSROMap
+The easy way to explore the [**Silkroad Online**](http://www.joymax.com/silkroad/) world map.
 
 #### Features
 - Navigate through towns, zones, and other popular locations

@@ -74,11 +74,20 @@ var xSROMap = function(){
 		if(coords.region > 32767)
 		{
 			lng = (128 * 192 + coords.x / 10) / 192;
-			lat = (127 * 192 + coords.y / 10) /192;
+			lat = (127 * 192 + coords.y / 10) / 192;
 			return [lat,lng];
 		}
-		lat = ( coords.posY / 192 ) + 91;
-		lng = ( coords.posX / 192 ) + 135;
+		// world coord type
+		if(coords.posY && coords.posX)
+		{
+			lat = ( coords.posY / 192 ) + 91;
+			lng = ( coords.posX / 192 ) + 135;
+		}
+		else
+		{
+			lng = (coords.region & 0xFF) + coords.x / 1920;
+			lat = ( (coords.region >> 8) & 0xFF) + coords.y / 1920 - 1;
+		}
 		return [lat,lng];
 	};
 	var CoordsGameToSRO = function(gameCoords) {
@@ -225,13 +234,9 @@ var xSROMap = function(){
 		// show SRO coordinates on click
 		map.on('click', function (e){
 			var coord = CoordMapToSRO(e.latlng);
-			var content;
-			if(coord.region > 32767){
-				content = "( X:"+coord.x+" , Y:"+coord.y+" , Z:"+coord.z+" , Region: "+coord.region+" )";
-			}
-			else{
-				content = "( X:"+coord.posX+" , Y:"+coord.posY+" )";
-			}
+			var content = "[ X:"+coord.x+" , Y:"+coord.y+" , Z:"+coord.z+" , Region: "+coord.region+" ]";
+			if(coord.region <= 32767)
+				content = "( PosX:"+coord.posX+" , PosY:"+coord.posY+" )<br>"+content;
 			// Show popup
 			L.popup().setLatLng(e.latlng).setContent(content).openOn(map);
 		});
