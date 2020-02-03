@@ -560,9 +560,6 @@
 .leaflet-oldie .leaflet-popup-content-wrapper,
 .leaflet-oldie .leaflet-popup-tip {
   border: 1px solid #999;
-  }
-.leaflet-control-zoom{
-  display: none;
 }
 
 /* div icon */

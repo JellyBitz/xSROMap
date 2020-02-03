@@ -3,7 +3,8 @@ The easy way to explore the [**Silkroad Online**](http://www.joymax.com/silkroad
 
 #### Features
 - Navigate through towns, zones, and other popular locations
-- Show coordinates by click 
+- Show coordinates by click
+- Zoom levels
 - Works on mobile devices
 
 > Looking for a [DEMO](http://JellyBitz.github.io/xSROMap)... ?
@@ -15,7 +16,6 @@ The easy way to explore the [**Silkroad Online**](http://www.joymax.com/silkroad
 - Search by coordinates
 - Teleport actions
 - Script creator (toolbar)
-- ZOOM O-O'
 
 ------------
 > **Do you like this project ?**
