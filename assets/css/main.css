@@ -39,17 +39,20 @@
   }
 }
 body {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
 }
 .page-wrapper .sidebar-wrapper,
 .sidebar-wrapper .sidebar-brand > a,
 .sidebar-wrapper .sidebar-dropdown > a:after,
+.sidebar-wrapper .sidebar-submenu-dropdown > a:after,
 .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a:before,
+.sidebar-wrapper .sidebar-menu .sidebar-submenu-dropdown .sidebar-submenu-submenu li a:before,
 .sidebar-wrapper ul li a i,
 .page-wrapper .page-content,
 .sidebar-wrapper .sidebar-search input.search-menu,
 .sidebar-wrapper .sidebar-search .input-group-text,
 .sidebar-wrapper .sidebar-menu ul li a,
+.sidebar-wrapper .sidebar-submenu-menu ul li a,
 #show-sidebar,
 #close-sidebar {
   -webkit-transition: all 0.3s ease;
@@ -238,12 +241,13 @@ body {
   border-radius: 4px;
 }
 
-.sidebar-wrapper .sidebar-menu ul li a:hover > i::before {
+.sidebar-wrapper .sidebar-menu ul li a:hover > i::before{
   display: inline-block;
   animation: swing ease-in-out 0.5s 1 alternate;
 }
 
-.sidebar-wrapper .sidebar-menu .sidebar-dropdown > a:after {
+.sidebar-wrapper .sidebar-menu .sidebar-dropdown > a:after,
+.sidebar-wrapper .sidebar-menu .sidebar-submenu-dropdown > a:after {
   font-family: "Font Awesome 5 Pro";
   font-weight: 900;
   content: "\f105";
@@ -260,6 +264,9 @@ body {
   right: 15px;
   top: 14px;
 }
+.sidebar-wrapper .sidebar-menu .sidebar-submenu-dropdown > a:after{
+  top: 12px;
+}
 
 .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu ul {
   padding: 5px 0;
@@ -267,10 +274,15 @@ body {
 
 .sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li {
   padding-left: 25px;
+  font-size: 14px;
+}
+.sidebar-wrapper .sidebar-menu .sidebar-submenu-dropdown .sidebar-submenu-submenu li {
+  padding-left: 15px;
   font-size: 13px;
 }
 
-.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a:before {
+.sidebar-wrapper .sidebar-menu .sidebar-dropdown .sidebar-submenu li a:before,
+.sidebar-wrapper .sidebar-menu .sidebar-submenu-dropdown .sidebar-submenu-submenu li a:before  {
   content: "\f111";
   font-family: "Font Awesome 5 Pro";
   font-weight: 400;
@@ -297,11 +309,13 @@ body {
   margin-top: 0px;
 }
 
-.sidebar-wrapper .sidebar-menu .sidebar-submenu {
+.sidebar-wrapper .sidebar-menu .sidebar-submenu,
+.sidebar-wrapper .sidebar-menu .sidebar-submenu-submenu {
   display: none;
 }
 
-.sidebar-wrapper .sidebar-menu .sidebar-dropdown.active > a:after {
+.sidebar-wrapper .sidebar-menu .sidebar-dropdown.active > a:after,
+.sidebar-wrapper .sidebar-menu .sidebar-submenu-dropdown.active > a:after {
   transform: rotate(90deg);
   right: 17px;
 }
