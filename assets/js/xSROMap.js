@@ -296,6 +296,14 @@ var xSROMap = function(){
 		// center view
 		map.panTo(CoordSROToMap(coord),8);
 	};
+	var flyView = function (coord){
+		// track navigation
+		coordBackToPosition = coord;
+		// update layer
+		setMapLayer(getLayer(coord));
+		// center view
+		map.flyTo(CoordSROToMap(coord),8,{duration: 2.5});
+	};
 	// Fix coordinates, return internal silkroad coords
 	var fixCoords = function(x,y,z,region) {
 		// Fix negative region
@@ -312,7 +320,7 @@ var xSROMap = function(){
 	};
 	return{
 		// Initialize silkroad world map
-		init:function(id,x=113,y=12,z=0,region=0){
+		init:function(id,x=114,y=47.25,z=0,region=0){
 			// init stuffs
 			initLayers(id);
 			initControls();
@@ -321,6 +329,15 @@ var xSROMap = function(){
 		},
 		SetView:function(x,y,z=0,region=0){
 			setView(fixCoords(x,y,z,region));
+		},
+		FlyView:function(x,y,z=0,region=0){
+			flyView(fixCoords(x,y,z,region));
+		},
+		AddNPC(uniqueId,html,x,y,z=0,region=0){
+			// ...
+		},
+		AddTeleport(uniqueId,html,x,y,z,region,toX,toY,toZ,toRegion){
+			// ...
 		}
 	};
 }();

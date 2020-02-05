@@ -1,3 +1,6 @@
+// Initialize map
+xSROMap.init('map');
+
 // sidebar dropdown menu lv.1
 $(".sidebar-dropdown > a").click(function()
 {
@@ -37,22 +40,23 @@ $("#close-sidebar").click(function() {
 $("#show-sidebar").click(function() {
 	$(".page-wrapper").addClass("toggled");
 });
-
 // Quick filter
-$('input[type="text"]').keyup(function()
+$('#search input[type="text"]').keyup(function()
 {
-	var searchText = $(this).val().toLowerCase();
-	var navCategories = $("#navigation li.sidebar-dropdown");
-	navCategories.each(function(index){
+	var searchText = $(this).val();
 
-		var category = $(this);
+	// check if value are coordinates type
+	if(searchText.split(',').length > 1)
+		searchText = "";
+	else
+		searchText = searchText.toLowerCase();
+
+	// Navigate through every category and all his items
+	$("#navigation li.sidebar-dropdown").each(function(index){
 		var showCounter = 0;
-
-		console.log(navCategories[index]);
-
-		var items = category.find(".sidebar-submenu>ul>li");
-		$(items).each(function(index){
-			if($(this).text().toLowerCase().indexOf(searchText) > -1){
+		$(this).find(".sidebar-submenu>ul>li").each(function(index){
+			if($(this).text().toLowerCase().indexOf(searchText) > -1)
+			{
 				$(this).show();
 				showCounter++;
 			}
@@ -62,29 +66,38 @@ $('input[type="text"]').keyup(function()
 			}
 		});
 
-		if(showCounter > 0){ $(this).show(); }
-		else{ $(this).hide(); }
-		
-		console.log("- - - - "+showCounter);
-
-
-
-		//console.log($(allListItems[index]));
-
-		//$(allListItems[index]).parent().hide();
-		// var filteredItems = allListItems.filter(function(index) {
-		// 	console.log($(this).text());
-		// 	return $(this).text().indexOf(searchText) > -1;
-		// });
-		// console.log($(this).val());
-		// if(filteredItems.len() == 0){
-
-		// 	$(this).hide();
-		// }
-		// allListItems.hide();
-		// filteredItems.show();
+		// hide category if has no match
+		if(showCounter > 0)
+			$(this).show();
+		else
+			$(this).hide();
 	});	
 });
-
-// Initialize map
-xSROMap.init('map');
+// Coordinate search on click/enter
+$('#search .input-group-append').click(function()
+{
+	var searchCoordinates = $('#search input[type="text"]').val().split(',');
+	// check if value are coordinates type
+	if(searchCoordinates.length > 1){
+		var x = parseFloat(searchCoordinates[0]);
+		var y = parseFloat(searchCoordinates[1]);
+		// x and y correctly parsed?
+		if(x != NaN && y != NaN){
+			// check if is a region coordinate
+			if(searchCoordinates.length == 4){
+				var z = parseFloat(searchCoordinates[2]);
+				var region = parseFloat(searchCoordinates[3]);
+				if(z != NaN && region != NaN){
+					xSROMap.SetView(x,y,z,region);
+				}
+			}else{
+				xSROMap.SetView(x,y);
+			}
+		}
+	}
+});
+$('#search input[type="text"]').keypress(function(e) {
+	if(e.which == 13) {
+		$("#search .input-group-append").click();
+	}
+});

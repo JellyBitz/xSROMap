@@ -209,6 +209,9 @@ body {
 .sidebar-wrapper .sidebar-search > div {
   padding: 10px 20px;
 }
+#search .input-group-append{
+  cursor: pointer;
+}
 
 /*----------------------sidebar-menu-------------------------*/
 

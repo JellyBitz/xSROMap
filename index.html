@@ -48,7 +48,7 @@
 			<div class="sidebar-content">
 				<div class="sidebar-brand">
 					<a href="#"><span class="x-color">x</span>SROMap</a>
-					<span class="version"><span class="x-color">v</span>0.0.5</span>
+					<span class="version"><span class="x-color">v</span>0.0.6</span>
 				</div>
 				<div class="sidebar-header">
 					<div class="user-pic">
@@ -88,10 +88,10 @@
 				</div>
 
 				<!-- sidebar-header  -->
-				<div class="sidebar-search">
+				<div id="search" class="sidebar-search">
 					<div>
 						<div class="input-group">
-							<input type="text" class="form-control search-menu" placeholder="Search...">
+							<input type="text" class="form-control search-menu" placeholder="Search... X,Y?">
 							<div class="input-group-append">
 								<span class="input-group-text">
 									<i class="fa fa-search" aria-hidden="true"></i>
@@ -115,30 +115,30 @@
 							<div class="sidebar-submenu">
 								<ul>
 									<li>
-										<a href="#" onclick="xSROMap.SetView(6434,1044)">Jangan
+										<a href="#" onclick="xSROMap.FlyView(6434,1044)">Jangan
 											<!--span class="badge badge-pill badge-success">Pro</span-->
 										</a>
 									</li>
 									<li>
-										<a href="#" onclick="xSROMap.SetView(3554,2112)">Donwhang</a>
+										<a href="#" onclick="xSROMap.FlyView(3554,2112)">Donwhang</a>
 									</li>
 									<li>
-										<a href="#" onclick="xSROMap.SetView(114,47)">Hotan</a>
+										<a href="#" onclick="xSROMap.FlyView(114,47.25)">Hotan</a>
 									</li>
 									<li>
-										<a href="#" onclick="xSROMap.SetView(-5184,2889)">Samarkand</a>
+										<a href="#" onclick="xSROMap.FlyView(-5184,2889)">Samarkand</a>
 									</li>
 									<li>
-										<a href="#" onclick="xSROMap.SetView(-10681,2584)">Constantinople</a>
+										<a href="#" onclick="xSROMap.FlyView(-10681,2584)">Constantinople</a>
 									</li>
 									<li>
-										<a href="#" onclick="xSROMap.SetView(-16147,75)">Alexandria (North)</a>
+										<a href="#" onclick="xSROMap.FlyView(-16147,75)">Alexandria (North)</a>
 									</li>
 									<li>
-										<a href="#" onclick="xSROMap.SetView(-16641,-275)">Alexandria (South)</a>
+										<a href="#" onclick="xSROMap.FlyView(-16641,-275)">Alexandria (South)</a>
 									</li>
 									<li>
-										<a href="#" onclick="xSROMap.SetView(-8525,-717)">Bahdag</a>
+										<a href="#" onclick="xSROMap.FlyView(-8525,-717)">Bahdag</a>
 									</li>
 								</ul>
 							</div>
@@ -227,7 +227,10 @@
 										<a href="#" onclick="xSROMap.SetView(-561,2037)">Taklamakan</a>
 									</li>
 									<li>
-										<a href="#" onclick="xSROMap.SetView(-4608,0)">Mountain Roc</a>
+										<a href="#" onclick="xSROMap.SetView(-4401,-141)">Mountain Roc</a>
+									</li>
+									<li>
+										<a href="#" onclick="xSROMap.SetView(-12378,-1344)">Phantom Desert</a>
 									</li>
 								</ul>
 							</div>

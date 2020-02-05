@@ -2,8 +2,9 @@
 The easy way to explore the [**Silkroad Online**](http://www.joymax.com/silkroad/) world map.
 
 #### Features
-- Navigate through towns, zones, and other popular locations
-- Search filter
+- Navigate through towns, areas, and other popular locations
+- Search filter by locations
+- Search by coordinates (both supported: PosX,PosY or X,Y,Z,Region)
 - Show coordinates by click
 - Zoom levels
 - Works on mobile devices
@@ -11,8 +12,7 @@ The easy way to explore the [**Silkroad Online**](http://www.joymax.com/silkroad
 > Looking for a [DEMO](http://JellyBitz.github.io/xSROMap)... ?
 
 #### Upcoming
-- Add all NPC's
-- Search by coordinates
+- Add all game NPC's markers
 - Teleport actions
 - Script creator (toolbar)
 
