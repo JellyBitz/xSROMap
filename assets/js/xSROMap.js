@@ -51,7 +51,12 @@ var xSROMap = function(){
 	var map;
 	// mapping
 	var mappingLayers = {};
-	var mappingLayersMarkers = [];
+	var mappingMarkers = {
+		'npc':{},
+		'tp':{},
+		'player':{}
+	};
+	var lastMarkerSelected;
 	// current tile layer
 	var mapLayer;
 	var coordBackToPosition;
@@ -127,7 +132,7 @@ var xSROMap = function(){
 
 		// Default layer
 		mapLayer = new SRLayer(imgHost+'{z}/{x}x{y}.jpg', {
-			attribution: '<a href="http://silkroadonline.net/">World Map</a>'
+			attribution: '<a href="#">World Map</a>'
 		});
 		mappingLayers[''] = mapLayer;
 
@@ -234,9 +239,9 @@ var xSROMap = function(){
 		// show SRO coordinates on click
 		map.on('click', function (e){
 			var coord = CoordMapToSRO(e.latlng);
-			var content = "[ X:"+coord.x+" , Y:"+coord.y+" , Z:"+coord.z+" , Region: "+coord.region+" ]";
+			var content = "[<b> X:"+coord.x+" , Y:"+coord.y+" , Z:"+coord.z+" , Region: "+coord.region+" </b>]";
 			if(coord.region <= 32767)
-				content = "( PosX:"+coord.posX+" , PosY:"+coord.posY+" )<br>"+content;
+				content = "(<b> PosX:"+coord.posX+" , PosY:"+coord.posY+" </b>)<br>"+content;
 			// Show popup
 			L.popup().setLatLng(e.latlng).setContent(content).openOn(map);
 		});
@@ -256,10 +261,15 @@ var xSROMap = function(){
 			mapLayer = tileLayer;
 			map.addLayer(mapLayer);
 
+			// init highlight
+			lastMarkerSelected = null;
 			// Add markers from the new layer
-			for (var i = 0; i < mappingLayersMarkers.length; i++){
-				if(mappingLayersMarkers[i].layer == mapLayer){
-					mappingLayersMarkers[i].marker.addTo(map);
+			for (var type in mappingMarkers){
+				for (var id in mappingMarkers[type]){
+					var marker = mappingMarkers[type][id];
+					if(marker.options.xMap.layer == mapLayer){
+						marker.addTo(map);
+					}
 				}
 			}
 		}
@@ -333,35 +343,63 @@ var xSROMap = function(){
 			setView(fixCoords(x,y,z,region));
 		},
 		SetView:function(x,y,z=0,region=0){
+			// Remove highlight if exists
+			if(lastMarkerSelected){
+				L.DomUtil.removeClass(lastMarkerSelected._icon, 'leaflet-marker-selected');
+				lastMarkerSelected = null;
+			}
+			// view
 			setView(fixCoords(x,y,z,region));
 		},
 		FlyView:function(x,y,z=0,region=0){
+			// Remove highlight if exists
+			if(lastMarkerSelected){
+				L.DomUtil.removeClass(lastMarkerSelected._icon, 'leaflet-marker-selected');
+				lastMarkerSelected = null;
+			}
+			// view
 			flyView(fixCoords(x,y,z,region));
 		},
-		AddNPC(html,x,y,z=0,region=0){
-			var coord = fixCoords(x,y,z,region);
-			// create dimensions
-			var iconNPC = new L.Icon({
-				iconUrl: imgHost+'icon/mm_sign_npc.png',
-				iconSize:	[6,6], // (w,h)
-				iconAnchor:	[3,3], // (w/2,h/2)
-				popupAnchor:[0,-3] // (0,-h/2)
-			});
-			// create marker virtualized
-			var marker = L.marker(CoordSROToMap(coord),{icon:iconNPC,pmIgnore:true,virtual:true});
-			marker.bindPopup(html);
-			// Check if the NPC is from the current layer
-			var layer = getLayer(coord);
-			if(layer == mapLayer)
-				marker.addTo(map);
-			// keep a register to not get lost on changing layers
-			mappingLayersMarkers[mappingLayersMarkers.length] = {'marker':marker,'layer':layer};
+		AddNPC(id,html,x,y,z=0,region=0){
+			// Add only new ones
+			if(!mappingMarkers['npc'][id]){
+				var coord = fixCoords(x,y,z,region);
+				// create dimensions
+				var iconNPC = new L.Icon({
+					iconUrl: imgHost+'icon/mm_sign_npc.png',
+					iconSize:	[6,6], // (w,h)
+					iconAnchor:	[3,3], // (w/2,h/2)
+					popupAnchor:[0,-3] // (0,-h/2)
+				});
+				// create marker virtualized
+				var marker = L.marker(CoordSROToMap(coord),{icon:iconNPC,riseOnHover:true,pmIgnore:true,virtual:true});
+				marker.bindPopup(html);
+				// Check if the NPC is from the current layer
+				var layer = getLayer(coord);
+				if(layer == mapLayer)
+					marker.addTo(map);
+				marker.options['xMap'] = {"layer":layer,'coordinates':coord};
+				// keep a register to not get lost on changing layers
+				mappingMarkers['npc'][id] = marker;
+			}
+		},
+		GoToNPC(id){
+			var marker = mappingMarkers['npc'][id];
+			// check if exists and has a valid layer
+			if(marker && marker.options.xMap.layer){
+				setView(marker.options.xMap.coordinates);
+				// Add/remove highlight
+				if(lastMarkerSelected)
+					L.DomUtil.removeClass(lastMarkerSelected._icon, 'leaflet-marker-selected');
+				lastMarkerSelected = marker;
+				L.DomUtil.addClass(marker._icon, 'leaflet-marker-selected');
+			}
 		},
 		AddTeleport(html,x,y,z,region,toX,toY,toZ,toRegion){
 			// ...
 		},
 		AddPlayer(uniqueId,html,x,y,z=0,region=0){
-
+			// ...
 		}
 	};
 }();
