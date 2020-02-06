@@ -15,12 +15,13 @@
 	<meta itemprop="name" content="xSROMap">
 	<meta itemprop="description" content="The easy way to explore the Silkroad Online world map.">
 	<meta itemprop="image" content="assets/img/JellyBitz.png">
-	<!--- Facebook Meta Tags --->
-	<meta property="og:url" content="https://github.com/JellyBitz/xSROMap">
+	<!--- Facebook / Open Graph protocol --->
+	<meta property="og:site_name" content="xSROMap">
 	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://github.com/JellyBitz/xSROMap">
+	<meta property="og:image" content="assets/img/JellyBitz.png">
 	<meta property="og:title" content="xSROMap | Silkroad Online Map">
 	<meta property="og:description" content="The easy way to explore the Silkroad Online world map.">
-	<meta property="og:image" content="assets/img/JellyBitz.png">
 	<!--- Twitter Meta Tags --->
 	<meta name="twitter:title" content="xSROMap | Silkroad Online Map">
 	<meta name="twitter:description" content="The easy way to explore the Silkroad Online world map.">
@@ -48,7 +49,7 @@
 			<div class="sidebar-content">
 				<div class="sidebar-brand">
 					<a href="#"><span class="x-color">x</span>SROMap</a>
-					<span class="version"><span class="x-color">v</span>0.0.6</span>
+					<span class="version"><span class="x-color">v</span>0.0.7</span>
 				</div>
 				<div class="sidebar-header">
 					<div class="user-pic">
@@ -235,7 +236,7 @@
 								</ul>
 							</div>
 						</li>
-						<li class="sidebar-dropdown">
+						<li id="navigation-npc" class="sidebar-dropdown">
 							<a href="#">
 								<i class="fa fa-user-shield"></i>
 								<span title="Non Player Character">NPC's</span>
@@ -243,15 +244,9 @@
 							</a>
 							<div class="sidebar-submenu">
 								<ul>
-									<li>
-										<a href="#" onclick="xSROMap.SetView(659,981,0,25257)">Buddhist Priest Jeonghye</a>
-									</li>
-									<li>
-										<a href="#" onclick="xSROMap.SetView(692.15997,137.35001,0,25257)">Buddhist Priest Kushyan</a>
-									</li>		
-									<li>
-										<a href="#" onclick="xSROMap.SetView(1387.17,1765.02,-0.07,25001)">Solder Sangnam [Teleport]</a>
-									</li>
+									<!--li>
+										<a href="#" onclick="xSROMap.SetView(x,y,z,region)">NPC Name</a>
+									</li-->
 								</ul>
 							</div>
 						</li>

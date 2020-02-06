@@ -45,11 +45,13 @@ L.Marker.addInitHook(function(){
 
 // Silkroad map handler
 var xSROMap = function(){
+	// image host url location
+	var imgHost = 'assets/img/silkroad/minimap/';
 	// map handler
 	var map;
 	// mapping
 	var mappingLayers = {};
-	var mappingMarkers = {};
+	var mappingLayersMarkers = [];
 	// current tile layer
 	var mapLayer;
 	var coordBackToPosition;
@@ -107,10 +109,7 @@ var xSROMap = function(){
 	};
 	// initialize layers setup
 	var initLayers = function(id){
-		// minimap location
-		var imgHost = 'assets/img/silkroad/minimap/';
-
-		// silkroad base setup
+		// map base
 		map = L.map('map', {
 			crs: L.CRS.Simple,
 			minZoom:0,maxZoom:8,zoomControl:false
@@ -254,7 +253,13 @@ var xSROMap = function(){
 			mapLayer = tileLayer;
 			map.addLayer(mapLayer);
 
-			// Add markers from layer
+			// Add markers from the new layer
+			for (var i = 0; i < mappingLayersMarkers.length; i++){
+				console.log(mappingLayersMarkers[i]);
+				if(mappingLayersMarkers[i].layer == mapLayer){
+					mappingLayersMarkers[i].marker.addTo(map);
+				}
+			}
 		}
 	};
 	// Return the layer from the specified silkroad coordinate
@@ -333,11 +338,30 @@ var xSROMap = function(){
 		FlyView:function(x,y,z=0,region=0){
 			flyView(fixCoords(x,y,z,region));
 		},
-		AddNPC(uniqueId,html,x,y,z=0,region=0){
+		AddNPC(html,x,y,z=0,region=0){
+			var coord = fixCoords(x,y,z,region);
+			// create dimensions
+			var iconNPC = new L.Icon({
+				iconUrl: imgHost+'icon/mm_sign_npc.png',
+				iconSize:	[6,6], // (w,h)
+				iconAnchor:	[3,3], // (w/2,h/2)
+				popupAnchor:[0,-3] // (0,-h/2)
+			});
+			// create marker virtualized
+			var marker = L.marker(CoordSROToMap(coord),{icon:iconNPC,pmIgnore:true,virtual:true});
+			marker.bindPopup(html);
+			// Check if the NPC is from the current layer
+			var layer = getLayer(coord);
+			if(layer == mapLayer)
+				marker.addTo(map);
+			// keep a register to not get lost on changing layers
+			mappingLayersMarkers[mappingLayersMarkers.length] = {'marker':marker,'layer':layer};
+		},
+		AddTeleport(html,x,y,z,region,toX,toY,toZ,toRegion){
 			// ...
 		},
-		AddTeleport(uniqueId,html,x,y,z,region,toX,toY,toZ,toRegion){
-			// ...
+		AddPlayer(uniqueId,html,x,y,z=0,region=0){
+
 		}
 	};
 }();
