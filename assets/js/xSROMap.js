@@ -243,6 +243,9 @@ var xSROMap = function(){
 	};
 	// Set the map layer
 	var setMapLayer = function (tileLayer){
+		// Do nothing
+		if(tileLayer == null) return;
+		// Different from current layer?
 		if(mapLayer != tileLayer)
 		{
 			// Clear map
@@ -255,7 +258,6 @@ var xSROMap = function(){
 
 			// Add markers from the new layer
 			for (var i = 0; i < mappingLayersMarkers.length; i++){
-				console.log(mappingLayersMarkers[i]);
 				if(mappingLayersMarkers[i].layer == mapLayer){
 					mappingLayersMarkers[i].marker.addTo(map);
 				}
@@ -275,9 +277,8 @@ var xSROMap = function(){
 					var layers = layer.options.overlap;
 					// check the Z position
 					for (var i = 0; i < layers.length; i++) {
-						if (coord.z < layers[i].options.posZ){
+						if (coord.z < layers[i].options.posZ)
 							break;
-						}
 						layer = layers[i];
 					}
 				}
@@ -287,8 +288,8 @@ var xSROMap = function(){
 				}
 				// add/override layer region
 				layer.options['region'] = coord.region;
-				return layer;
 			}
+			return layer;
 		}
 		return mappingLayers[''];
 	};
@@ -312,9 +313,8 @@ var xSROMap = function(){
 	// Fix coordinates, return internal silkroad coords
 	var fixCoords = function(x,y,z,region) {
 		// Fix negative region
-		if(region < 0){
+		if(region < 0)
 			region += 65536;
-		}
 		// Check coord type
 		if(region == 0){
 			// using x,y as game coords
