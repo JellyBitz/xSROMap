@@ -400,7 +400,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 /* attribution and scale controls */
 
 .leaflet-container .leaflet-control-attribution {
-	text-shadow: 0 1px 4px #000, 1px 0 4px #000;
+	text-shadow: 0 1px 3px #000, 1px 0 3px #000;
 	margin: 0;
 	color: #00beff;
 }
@@ -511,7 +511,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	color: #dcddde;
 	box-shadow: 0 3px 5px rgba(0,0,0,0.3);
 }
-.leaflet-container a.leaflet-popup-close-button {
+.leaflet-container a.leaflet-popup-close-button{
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -526,9 +526,25 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	font-weight: bold;
 	background: transparent;
 }
-.leaflet-container a.leaflet-popup-close-button:hover {
+.leaflet-container a.leaflet-popup-copy-button{
+	position: relative;
+	left: -5px;
+}
+
+.leaflet-container a.leaflet-popup-copy-button svg{
+	fill: #c3c3c3;
+	width: 14px;
+	height: auto;
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover,
+.leaflet-container a.leaflet-popup-copy-button:hover{
 	color: #999;
 }
+.leaflet-container a.leaflet-popup-copy-button svg:hover{
+	fill:#00beff;
+}
+
 .leaflet-popup-scrolled {
 	overflow: auto;
 	border-bottom: 1px solid #ddd;
