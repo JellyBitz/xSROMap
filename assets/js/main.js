@@ -127,3 +127,30 @@ for(var i=0;i<TPs.length;i++)
 	// Add to map
 	xSROMap.AddTeleport(html,TPs[i].type,TPs[i].x,TPs[i].y,TPs[i].z,TPs[i].region);
 }
+
+// Show it at search box
+window.onload = function(){
+	// Reading GET inputs
+	var findGetParameter = function(parameter) {
+		var tmp = [];
+		var items = location.search.substr(1).split("&");
+		for (var i = 0; i < items.length; i++) {
+			tmp = items[i].split("=");
+			if (tmp[0] === parameter)
+				return decodeURIComponent(tmp[1]);
+		}
+		return null;
+	};
+	var x = findGetParameter("x");
+	var y = findGetParameter("y");
+	if(x && y){
+		var z = findGetParameter("z");
+		var r = findGetParameter("region");
+		// Try to search inmediatly
+		if(z && r){
+			$('#search input[type="text"]').val(x+","+y+","+z+","+r);
+		}else{
+			$('#search input[type="text"]').val(x+","+y);
+		}
+	}
+};
