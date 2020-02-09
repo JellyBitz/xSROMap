@@ -510,7 +510,7 @@ var xSROMap = function(){
 		},
 		LinkToClipboard(x,y,z=0,region=0){
 			var coord = fixCoords(x,y,z,region);
-			toClipboard(window.location.href.replace(location.hash,"").split('?')[0]+'?x='+coord.x+'&y='+coord.y+'&z='+coord.z+'&region='+coord.region);
+			toClipboard(window.location.href.split(/\?|#/)[0]+'?x='+coord.x+'&y='+coord.y+'&z='+coord.z+'&region='+coord.region);
 		}
 	};
 }();
