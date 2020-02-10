@@ -128,6 +128,8 @@ for(var i=0;i<TPs.length;i++)
 	xSROMap.AddTeleport(html,TPs[i].type,TPs[i].x,TPs[i].y,TPs[i].z,TPs[i].region);
 }
 
+xSROMap.AddPlayer(0,'<a href="#"><b>JellyBitz</b></a><br><i>Hi, I\'ll be here watching you!<br>And you can\'t do nothing about ... >:)</i>',116.75,117);
+
 // Show it at search box
 window.onload = function(){
 	// Reading GET inputs
