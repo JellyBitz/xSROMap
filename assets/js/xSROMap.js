@@ -260,11 +260,11 @@ var xSROMap = function(){
 			return null;
 		};
 		// Reading coords type
-		var x = findGetParameter("x");
-		var y = findGetParameter("y");
+		var x = parseFloat(findGetParameter("x"));
+		var y = parseFloat(findGetParameter("y"));
 		if(x && y){
-			var z = findGetParameter("z");
-			var r = findGetParameter("region");
+			var z = parseFloat(findGetParameter("z"));
+			var r = parseFloat(findGetParameter("region"));
 			// Try to search inmediatly
 			if(z && r)
 				setView(fixCoords(x,y,z,r));
@@ -364,6 +364,7 @@ var xSROMap = function(){
 		// using x,y,z,region internal silkroad coords
 		return {'x':x,'y':y,'z':z,'region':region};
 	};
+	// Copy text to clipboard
 	var toClipboard = function(text){
 		var e = document.createElement('textarea');
 		e.value = text;
@@ -502,11 +503,42 @@ var xSROMap = function(){
 			var marker = mappingMarkers['player'][id];
 			// check if exists and has a valid layer
 			if(marker && marker.options.xMap.layer){
-				// ...
+				// update the position
+				marker.options.xMap.coord = fixCoords(x,y,z,region);
+				marker.setLatLng(CoordSROToMap(marker.options.xMap.coord));
+				// check if there is a layer change
+				var newLayer = getLayer(marker.options.xMap.coord);
+				if(marker.options.xMap.layer != newLayer){
+					// add it to the current layer
+					if(newLayer == mapLayer){
+						marker.addTo(map);
+					}
+					// remove it from the current layer
+					else if(marker.options.xMap.layer == mapLayer){
+						map.eachLayer(function(layer){
+							if(layer == marker)
+								map.removeLayer(layer);
+						});
+					}
+					// update layer
+					marker.options.xMap.layer = newLayer;
+				}
 			}
 		},
 		RemovePlayer(id){
-			// ...
+			var marker = mappingMarkers['player'][id];
+			if(marker && marker.options.xMap.layer){
+				// delete from the current layer
+				if (marker.options.xMap.layer == mapLayer){
+					// Goes through every object and remove it
+					map.eachLayer(function(layer){
+						if(layer == marker)
+							map.removeLayer(layer);
+					});
+				}
+				// delete from register
+				delete mappingMarkers['player'][id]; 
+			}
 		},
 		LinkToClipboard(x,y,z=0,region=0){
 			var coord = fixCoords(x,y,z,region);

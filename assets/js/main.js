@@ -141,11 +141,11 @@ window.onload = function(){
 		}
 		return null;
 	};
-	var x = findGetParameter("x");
-	var y = findGetParameter("y");
+	var x = parseFloat(findGetParameter("x"));
+	var y = parseFloat(findGetParameter("y"));
 	if(x && y){
-		var z = findGetParameter("z");
-		var r = findGetParameter("region");
+		var z = parseFloat(findGetParameter("z"));
+		var r = parseFloat(findGetParameter("region"));
 		// Try to search inmediatly
 		if(z && r){
 			$('#search input[type="text"]').val(x+","+y+","+z+","+r);
