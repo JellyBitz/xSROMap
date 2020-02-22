@@ -20,16 +20,12 @@ var Modal = (function() {
 		e.preventDefault();
 		e.stopImmediatePropagation();
 
-		if(isOpen){
+		var target = $(e.target);
+
+		if(isOpen && (target.hasClass('modal__bg') || target.hasClass("modal__close") || target.parent().hasClass("modal__close"))){
 			$('.modal').removeClass('modal--active');
 			$('.modal__content').removeClass('modal__content--active');
-
-			var triggers = $('.modal__trigger');
-			for (var i = 0; i < triggers.length; i++) {
-				triggers[i].style.transform = 'none';
-				triggers[i].style.webkitTransform = 'none';
-			}
-			triggers.removeClass('modal__trigger--active');
+		}
 
 		isOpen = false;
     }

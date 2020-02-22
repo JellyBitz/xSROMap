@@ -588,9 +588,9 @@ var xSROMap = function(){
 			toClipboard(window.location.href.split(/\?|#/)[0]+'?x='+coord.x+'&y='+coord.y+'&z='+coord.z+'&region='+coord.region);
 		},
 		// Toolbar for drawing and editing geometry shapes
-		ShowDrawingToolbar(drawMarker,drawCircleMarker,drawPolyline,drawRectangle,drawPolygon,drawCircle,canEdit,canDrag,canCut,canDelete){
+		ShowDrawingToolbar(position,drawMarker,drawCircleMarker,drawPolyline,drawRectangle,drawPolygon,drawCircle,canEdit,canDrag,canCut,canDelete){
 			map.pm.addControls({
-				//position:'topleft',
+				position:position,
 				drawMarker:drawMarker,
 				drawCircleMarker:drawCircleMarker,
 				drawPolyline:drawPolyline,

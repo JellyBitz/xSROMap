@@ -31,7 +31,7 @@ for(var i=0;i<TPs.length;i++)
 // Player example
 xSROMap.AddPlayer(0,'<a href="#"><b>JellyBitz</b></a><br><i>Hi, I\'ll be here watching you!<br>And you can\'t do nothing about ... >:)</i>',116.75,117);
 // Editor
-xSROMap.ShowDrawingToolbar(true,false,true,false,true,true,true,true,false,true);
+xSROMap.ShowDrawingToolbar('topright',true,false,true,false,true,true,true,true,false,true);
 
 /*
  * Set sidebar actions
