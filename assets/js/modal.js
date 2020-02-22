@@ -25,10 +25,8 @@ var Modal = (function() {
 		if(isOpen && (target.hasClass('modal__bg') || target.hasClass("modal__close") || target.parent().hasClass("modal__close"))){
 			$('.modal').removeClass('modal--active');
 			$('.modal__content').removeClass('modal__content--active');
+			isOpen = false;
 		}
-
-		isOpen = false;
-    }
   };
   var initEvents = function() {
 		$('.modal__trigger').click(onTrigger);
