@@ -8,12 +8,12 @@ The easy way to explore the [**Silkroad Online**](http://www.joymax.com/silkroad
 - Teleport actions with NPC's included
 - Show coordinates by click
 - Zoom levels
+- Script creator (drawing toolbar)
 - Works on mobile devices
 
 > Looking for a [DEMO](http://JellyBitz.github.io/xSROMap)... ?
 
 #### Upcoming
-- Script creator (Toolbar)
 - Script editor (Load, Save, Edit)
 - Show/hide NPC's
 - Instructions to use with private servers (including NPCs, teleports..)

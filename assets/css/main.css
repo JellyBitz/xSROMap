@@ -436,7 +436,7 @@ body {
 	position: relative;
 	border-radius: 5px;
 	padding: 36px;
-	color: #f1f1f1;
+	color: #e6e6fa;
 	background: #31353D;
 	background-clip: padding-box;
 	box-shadow: 0 0px 20px 0 rgba(0,0,0,0.7);
@@ -453,7 +453,7 @@ body {
 	right: 0;
 	margin: 18px;
 	padding: 10px;
-	background: rgba(0,0,0,0.5);
+	background: rgba(0,0,0,0.3);
 	border-radius: 50%;
 }
 
@@ -536,4 +536,10 @@ body {
 	top:0;
 	left:0;
 	right:0;
+}
+
+img.under-development{
+	width: 100%;
+	max-width: 640px;
+	height: auto;
 }
