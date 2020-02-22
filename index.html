@@ -35,21 +35,21 @@
 	<link rel="stylesheet" type="text/css" href="assets/fonts/font-awesome-5.11.1/css/all.min.css">
 	<!-- Leaflet -->
 	<link rel="stylesheet" type="text/css" href="assets/js/leaflet/Leaflet.css">
-	<link rel="stylesheet" type="text/css" href="assets/js/leaflet/Leaflet.PM.css">
+	<link rel="stylesheet" type="text/css" href="assets/js/leaflet/Leaflet.Geoman.css">
 	<link rel="stylesheet" type="text/css" href="assets/js/leaflet/Leaflet.Easy-Button.css">
 	<!-- My style -->
 	<link rel="stylesheet" type="text/css" href="assets/css/main.css">
 </head>
 <body>
-	<div class="page-wrapper chiller-theme toggled">
+	<div class="page-wrapper jelly-theme toggled">
 		<a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
 			<i class="fas fa-bars"></i>
 		</a>
 		<nav id="sidebar" class="sidebar-wrapper">
 			<div class="sidebar-content">
 				<div class="sidebar-brand">
-					<a href="#"><span class="x-color">x</span>SROMap</a>
-					<span class="version"><span class="x-color">v</span>0.1.5</span>
+					<a href="#"><span class="jelly-color">x</span>SROMap</a>
+					<span class="version"><span class="jelly-color">v</span>0.2.0</span>
 				</div>
 				<div class="sidebar-header">
 					<div class="user-pic">
@@ -76,6 +76,13 @@
 							<a href="https://github.com/JellyBitz/xSROMap" target="_blank">
 								<i class="fa fa-book"></i>
 								<span>Installation</span>
+								<span class="badge badge-pill badge-warning">Not ready</span>
+							</a>
+						</li>
+						<li>
+							<a href="#" data-modal="modal-editor" class="modal__trigger">
+								<i class="fa fa-edit"></i>
+								<span>Script Editor</span>
 								<span class="badge badge-pill badge-warning">Not ready</span>
 							</a>
 						</li>
@@ -262,10 +269,6 @@
 				</a>
 				<a href="#">
 					<i class="fa fa-envelope"></i>
-					<span class="badge badge-pill badge-success notification">?</span>
-				</a>
-				<a href="#">
-					<i class="fa fa-cog"></i>
 					<span class="badge-sonar"></span>
 				</a-->
 				<a id="close-sidebar" href="#">
@@ -280,7 +283,21 @@
 				<div id="map"></div>
 			</div>
 		</main><!-- page-content" -->
+
 	</div><!-- page-wrapper -->
+
+	<!-- Modal -->
+	<div id="modal-editor" class="modal modal__bg" role="dialog" aria-hidden="true">
+		<div class="modal__dialog">
+			<div class="modal__content">
+				<center><img src="assets/img/under-development.png" width="600" style="box-shadow: 0 0px 30px 0 rgba(0,0,0,0.75)"></center>
+				<!-- modal close button -->
+				<a href="#" class="modal__close">
+					<i class="fa fa-times"></i>
+				</a>
+			</div>
+		</div>
+	</div>
 
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -288,10 +305,19 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 	<!-- Leaflet -->
 	<script src="assets/js/leaflet/Leaflet.min.js"></script>
-	<script src="assets/js/leaflet/Leaflet.PM.min.js"></script>
+	<script src="assets/js/leaflet/Leaflet.Geoman.min.js"></script>
 	<script src="assets/js/leaflet/Leaflet.Easy-Button.js"></script>
 	<!-- Main -->
 	<script src="assets/js/xSROMap.js"></script>
+	<script src="assets/js/modal.js"></script>
 	<script src="assets/js/main.js"></script>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-T0ZRSLYW9K"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	  gtag('config', 'G-T0ZRSLYW9K');
+	</script>
 </body>
 </html>
