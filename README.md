@@ -30,7 +30,7 @@ The easy way to explore the [**Silkroad Online**](http://www.joymax.com/silkroad
 | FlyView(`X,Y,Z,Region`) | - | Overload, using IC coords
 | AddNPC(`NpcID,HTMLPopup,PosX,PosY`) | - | Add NPC marker
 | AddNPC(`NpcID,HTMLPopup,X,Y,Z,Region`) | - | Overload, using IC coords
-| GoToNPC(`NpcID`) | `Boolean` | Set the view on NPC with highlight, return `True` if the ID exists.
+| GoToNPC(`NpcID`) | `Boolean` | Set the view on NPC with highlight, return `True` if the ID exists
 | AddTeleport(`HTMLPopup,Type,PosX,PosY`) | - | Add Teleport marker, `Type` is a number (0-6) which specify the icon shown
 | AddTeleport(`HTMLPopup,Type,X,Y,Z,Region`) | - | Overload, using IC coords
 | AddPlayer(`PlayerID,HTMLPopup,PosX,PosY`) | - | Add Player marker
@@ -64,15 +64,15 @@ The easy way to explore the [**Silkroad Online**](http://www.joymax.com/silkroad
 `...`
 
 You should join them all into one big file to fill our requirements.  
-Please, keep in mind the files needs to be lowercased to get it work in the next step.
+Please, keep in mind the files needs to be **lowercased** to get it work in the next step.
 
-Recommended to use **CMD.exe** with `copy` command which merge multiple files magically.
+Recommended to use _**CMD.exe**_ with `copy` command which merge multiple files magically.
 > `copy characterdata*.txt characterdata_all.txt`
 
-**2.-** Go to the next repository from **Repl.it**
+**2.-** Go to the following repository at **Repl.it**
 > https://repl.it/@JellyBitz/xSROMap-Gen
 
-.. and choose whatever option:
+.. and choose whatever option you think easier:
  
 > **1.-** Download **main.exe** from  
 > **2.-** Locate it the program at the same folder with all mentioned required files  
@@ -83,7 +83,7 @@ Recommended to use **CMD.exe** with `copy` command which merge multiple files ma
 > **2.-** Upload and replace the required files  
 > **3.-** Click at RUN (green) button
 
-**3.-** If everything is right, you'll get **.js** new files, which has a *Copy&Paste* javascript variable.
+**3.-** If everything is right, you'll get new **.js** files, which has a *Copy&Paste* javascript variable.
 
 - **NPCs.js :**  
 Contains an object array. The object has as attributes:  
@@ -101,14 +101,14 @@ Contains an object array. The object has as attributes:
 The same as **NPCs.js** but the objects also contains the attribute `teleport` explained above
 
 **4.-** Iterate the variable you need and add to the map.
-> See [main.js](https://github.com/JellyBitz/xSROMap/blob/master/assets/js/main.js) for more code references.
+> Check [main.js](https://github.com/JellyBitz/xSROMap/blob/master/assets/js/main.js) for more code references.
 
 ### Upcoming
 - Script editor (Load, Save, Edit)
 - Show/hide NPC's
 
 ---
-> ### **Do you like this project ?**  
+> ### Do you like this project ?  
 > ### Support me! [Buy me a coffee <img src="https://twemoji.maxcdn.com/2/72x72/2615.png" width="18" height="18">](https://www.buymeacoffee.com/JellyBitz "Coffee <3")
 > 
-> **Made with [<img title="Yes, Code!" src="https://twemoji.maxcdn.com/2/72x72/1f499.png" width="18" height="18">]() .. Pull if you want!** <img title="I'm JellyBitz" src="https://twemoji.maxcdn.com/2/72x72/1f575.png" width="18" height="18">
+> ### Made with [<img title="Yes, Code!" src="https://twemoji.maxcdn.com/2/72x72/1f499.png" width="18" height="18">](#) .. Pull if you want! [<img title="I'm JellyBitz" src="https://twemoji.maxcdn.com/2/72x72/1f575.png" width="18" height="18">](#)
