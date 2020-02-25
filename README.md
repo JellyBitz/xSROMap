@@ -16,10 +16,10 @@ The easy way to explore the [**Silkroad Online**](http://www.joymax.com/silkroad
 ---
 ### Getting Started
 
-**xSROMap.js** library contains the following methods, basic to create fully functional map:
+**xSROMap.js** library contains the following methods, basic to create fully functional map.
 
 | Method | Return | Description
-| :----: | :--- | :--- |
+| :---- | :---: | :--- |
 | init(`TagID`) | - | Initialize the silkroad map at the specified html tag with viewpoint at Hotan
 | init(`TagID,PosX,PosY`) | - | Overload, with view at **in game** (**IG**) coords
 | init(`TagID,X,Y,Z,Region`) | - | Overload, with view at **internal client** (**IC**) coords
@@ -40,8 +40,7 @@ The easy way to explore the [**Silkroad Online**](http://www.joymax.com/silkroad
 
 **Note:** The map accepts **GET** parameters, to share shortcut/link locations between users. Both coordinate types are supported and the link will be pointing the current map site.
 
-> The methods not mentioned here are focused at user features.
-> Explore the code for more information and edit to your necessities.
+> The methods not mentioned here are focused at user features. Explore the code for more information.
 
 ---
 ### Generating Game Data (Any server)
@@ -58,9 +57,9 @@ The easy way to explore the [**Silkroad Online**](http://www.joymax.com/silkroad
 - **teleportlink.txt**
 
 `characterdata_all` is a compilation of multiples files, like:
-`characterdata_100.txt`
-`characterdata_200.txt`
-`characterdata_300.txt`
+`characterdata_100.txt`  
+`characterdata_200.txt`  
+`characterdata_300.txt`  
 `...`
 
 You should join them all into one big file to fill our requirements.
@@ -75,37 +74,27 @@ Recommended to use **CMD.exe** with `copy` command which merge multiple files ma
 .. and choose whatever option:
  
 > **1.-** Download **main.exe** from
-
 > **2.-** Locate it the program at the same folder with all mentioned required files
-
 > **3.-** Execute the program
 
 .
 > **1.-** Fork the repository
-
 > **2.-** Upload and replace the required files
-
 > **3.-** Click at RUN (green) button
 
 **3.-** If everything is right, you'll get **.js** new files, which has a *Copy&Paste* javascript variable.
 
-- **NPCs.js** (A-Z)
-Contains an object array. The object has as atribute :
-`name` : Name of NPC
- `x, z, y, region` : internal client coords position
+- **NPCs.js :**  
+Contains an object array. The object has as attribute the `name` of NPC and `x, z, y, region` from internal client coords position.
 
-- **TP.js**
-Contains an object array. The object has as atribute :
-`name` : Name of the Gate
- `x, z, y, region` : internal client coords position
-`type` : Number [0-6] linked to the gate icon
-`teleport` :  An object array to the teleporting area zone, as **NPCs.js** explains.
+- **TP.js :**  
+Contains an object array. The object has as attributes the `name` of the Gate, `x, z, y, region` from internal client coords position, `type` number [0-6] linked to the gate icon, and `teleport` containing an object array to the teleporting area containing the `name` of the Area and `x, z, y, region` from the spawn position.
 
-- **NPCsLinked.js**
-The same as **NPCs.js** but the objects has a new attribute `teleport` as **TP.js** explains.
+- **NPCsLinked.js :**  
+The same as **NPCs.js** but the objects has the attribute `teleport`.
 
 **4.-** Iterate the variable you need and add to the map.
-> See [main.js](https://github.com/JellyBitz/xSROMap/blob/master/assets/main.js) for more code references.
+> See [main.js](https://github.com/JellyBitz/xSROMap/blob/master/assets/js/main.js) for more code references.
 
 ### Upcoming
 - Script editor (Load, Save, Edit)
