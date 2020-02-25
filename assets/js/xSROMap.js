@@ -64,7 +64,6 @@ var xSROMap = function(){
 	var mappingShapes = {};
 	// xSRO Map conversions
 	var CoordMapToSRO = function(latlng){
-		var coords = {}
 		// world layer
 		if(mapLayer == mappingLayers[''])
 			return CoordsGameToSRO({'posX':(latlng.lng - 135) * 192,'posY':(latlng.lat - 91) * 192});
@@ -422,6 +421,19 @@ var xSROMap = function(){
 			initEvents();
 			window.onload = setInitialView(fixCoords(x,y,z,region));
 		},
+		SetZoomLimit:function(minZoom,maxZoom){
+			// Check min max values
+			if(minZoom < 0) minZoom = 0;
+			if(maxZoom > 8) maxZoom = 8;
+			// Check wrong values
+			if(minZoom > maxZoom){
+				var temp = minZoom;
+				minZoom = maxZoom;
+				maxZoom = temp;
+			}
+			map.options.minZoom = minZoom;
+			map.options.maxZoom = maxZoom;
+		},
 		// Set the view quickly
 		SetView:function(x,y,z=0,region=0){
 			// Remove highlight if exists
@@ -620,6 +632,22 @@ var xSROMap = function(){
 		},
 		GetDrawingShapes(){
 			return mappingShapes;
+		},
+		ConvertLatLngToCoords(latlng){
+			return CoordMapToSRO(latlng);
+		},
+		ClearDrawingShapes(){
+			// Remove one by one
+			for (var id in mappingShapes){
+				var shape = mappingShapes[id];
+				if(shape.xMap.layer == mapLayer){
+					map.eachLayer(function(layer){
+						if(layer == shape)
+							map.removeLayer(layer);
+					});
+				}
+			}
+			mappingShapes = {};
 		}
 	};
 }();

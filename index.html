@@ -49,7 +49,7 @@
 			<div class="sidebar-content">
 				<div class="sidebar-brand">
 					<a href="#"><span class="jelly-color">x</span>SROMap</a>
-					<span class="version"><span class="jelly-color">v</span>0.2.3</span>
+					<span class="version"><span class="jelly-color">v</span>1.0.0</span>
 				</div>
 				<div class="sidebar-header">
 					<div class="user-pic">
@@ -75,15 +75,14 @@
 						<li>
 							<a href="https://github.com/JellyBitz/xSROMap" target="_blank">
 								<i class="fa fa-book"></i>
-								<span>Installation</span>
-								<span class="badge badge-pill badge-warning">Not ready</span>
+								<span>Documentation</span>
 							</a>
 						</li>
 						<li>
-							<a href="#" data-modal="modal-editor" class="modal__trigger">
+							<a href="#" data-toggle="modal" data-target="#modalScriptEditor">
 								<i class="fa fa-edit"></i>
 								<span>Script Editor</span>
-								<span class="badge badge-pill badge-warning">Not ready</span>
+								<span class="badge badge-pill badge-success">New</span>
 							</a>
 						</li>
 						<li>
@@ -118,13 +117,11 @@
 							<a href="#">
 								<i class="fa fa-university"></i>
 								<span>Towns</span>
-								<!--span class="badge badge-pill badge-danger">New</span-->
 							</a>
 							<div class="sidebar-submenu">
 								<ul>
 									<li>
 										<a href="#" onclick="xSROMap.FlyView(6434,1044)">Jangan
-											<!--span class="badge badge-pill badge-success">Pro</span-->
 										</a>
 									</li>
 									<li>
@@ -308,19 +305,28 @@
 			</div>
 		</main><!-- page-content" -->
 
-	</div><!-- page-wrapper -->
-
-	<!-- Modal -->
-	<div id="modal-editor" class="modal modal__bg" role="dialog" aria-hidden="true">
-		<div class="modal__content">
-			<img class="under-development" src="assets/img/under-development.png">
-			<p><center><b>Thank you for being patient. We are doing some work on this feature and will be ready soon!</b></center></p>
-			<!-- modal close button -->
-			<a href="#" class="modal__close">
-				<i class="fa fa-times"></i>
-			</a>
+		<!-- Modal -->
+		<div class="modal fade" id="modalScriptEditor" tabindex="-1" role="dialog" aria-labelledby="lblScriptEditor" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="lblScriptEditor">Script Editor</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<textarea class="form-control" id="textareaScriptEditor" rows="10"></textarea>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" onclick="xSROMap.ClearDrawingShapes()">Clear layers</button>
+						<button type="button" class="btn btn-secondary" onclick="ImportDrawingLayers()" disabled>Import</button>
+						<button type="button" class="btn btn-secondary" onclick="ExportDrawingLayers()">Export</button>
+					</div>
+				</div>
+			</div>
 		</div>
-	</div>
+	</div><!-- page-wrapper -->
 
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -332,15 +338,14 @@
 	<script src="assets/js/leaflet/Leaflet.Easy-Button.js"></script>
 	<!-- Main -->
 	<script src="assets/js/xSROMap.js"></script>
-	<script src="assets/js/modal.js"></script>
 	<script src="assets/js/main.js"></script>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-T0ZRSLYW9K"></script>
 	<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
-	  gtag('config', 'G-T0ZRSLYW9K');
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-T0ZRSLYW9K');
 	</script>
 </body>
 </html>

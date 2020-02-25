@@ -393,70 +393,6 @@ body {
   background: transparent;
 }
 
-/**
- * Modal CSS
- */
-
-.modal {
-	will-change: visibility, opacity;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	align-items: center;
-	-webkit-box-pack: center;
-	-ms-flex-pack: center;
-	justify-content: center;
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	overflow-y: auto;
-	overflow-x: hidden;
-	z-index: 9999;
-	visibility: hidden;
-	opacity: 0;
-	-webkit-transition: all 0.5s cubic-bezier(0.23,1,0.32,1);
-	transition: all 0.5s cubic-bezier(0.23,1,0.32,1);
-}
-.modal--active {
-	visibility: visible;
-	opacity: 1;
-}
-.modal__bg {
-	background: rgba(0,0,0,0.5);
-}
-.modal__content {
-	max-width: 90vw;
-	max-height: 90vh;
-	overflow-y: auto;
-	will-change: transform, opacity;
-	position: relative;
-	border-radius: 5px;
-	padding: 36px;
-	color: #e6e6fa;
-	background: #31353D;
-	background-clip: padding-box;
-	box-shadow: 0 0px 20px 0 rgba(0,0,0,0.7);
-	opacity: 0;
-	-webkit-transition: all 0.25s cubic-bezier(0.23,1,0.32,1);
-	transition: all 0.25s cubic-bezier(0.23,1,0.32,1);
-}
-.modal__content--active {
-	opacity: 1;
-}
-.modal__close {
-	position: absolute;
-	top: 0;
-	right: 0;
-	margin: 18px;
-	padding: 10px;
-	background: rgba(0,0,0,0.3);
-	border-radius: 50%;
-}
-
 /*
  * JellyBitz Theme
  */
@@ -524,6 +460,30 @@ body {
 	border-right: none;
 }
   
+/**
+ * Modal CSS
+ */
+.modal-content{
+	color: #e6e6fa;
+	background: #31353D;
+}
+.modal-content .close{
+	color: #bdbdbd;
+	text-shadow:none;
+}
+.modal-content .close:hover{
+	color: #fff;
+}
+.modal-header{
+	border-bottom-color: #3a3f48;
+}
+.modal-footer{
+	border-top-color: #3a3f48;
+}
+.modal .btn{
+	box-shadow: none;
+}
+
 /*
  * Extra stuffs 
  */
@@ -536,10 +496,4 @@ body {
 	top:0;
 	left:0;
 	right:0;
-}
-
-img.under-development{
-	width: 100%;
-	max-width: 640px;
-	height: auto;
 }
