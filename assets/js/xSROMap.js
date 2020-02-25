@@ -491,7 +491,9 @@ var xSROMap = function(){
 				lastMarkerSelected = marker;
 				marker._icon.style.zIndex = Object.keys(mappingMarkers['npc']).length;
 				L.DomUtil.addClass(marker._icon, 'leaflet-marker-selected');
+				return true;
 			}
+			return false;
 		},
 		AddTeleport(html,type,x,y,z=0,region=0){
 			var coord = fixCoords(x,y,z,region);
@@ -579,6 +581,25 @@ var xSROMap = function(){
 					marker.options.xMap.layer = newLayer;
 				}
 			}
+		},
+		GoToPlayer(id){
+			var marker = mappingMarkers['player'][id];
+			// check if exists and has a valid layer
+			if(marker && marker.options.xMap.layer){
+				setView(marker.options.xMap.coordinates);
+				// Add/remove highlight
+				if(lastMarkerSelected)
+				{
+					// reset
+					lastMarkerSelected._icon.style.zIndex =  lastMarkerSelected._icon._leaflet_pos.y;
+					L.DomUtil.removeClass(lastMarkerSelected._icon, 'leaflet-marker-selected');
+				}
+				lastMarkerSelected = marker;
+				marker._icon.style.zIndex = Object.keys(mappingMarkers['player']).length;
+				L.DomUtil.addClass(marker._icon, 'leaflet-marker-selected');
+				return true;
+			}
+			return false;
 		},
 		RemovePlayer(id){
 			var marker = mappingMarkers['player'][id];
