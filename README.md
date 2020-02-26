@@ -30,23 +30,23 @@ The easy way to explore the [**Silkroad Online**](http://www.joymax.com/silkroad
 | FlyView(`X,Y,Z,Region`) | - | Overload, using IC coords
 | AddNPC(`NpcID,HTMLPopup,PosX,PosY`) | - | Add NPC marker
 | AddNPC(`NpcID,HTMLPopup,X,Y,Z,Region`) | - | Overload, using IC coords
-| GoToNPC(`NpcID`) | `Boolean` | Set the view on NPC with highlight, return `True` if the ID exists
+| GoToNPC(`NpcID`) | `Boolean` | Set the view on NPC and highlight him, return `True` if the ID exists
 | AddTeleport(`HTMLPopup,Type,PosX,PosY`) | - | Add Teleport marker, `Type` is a number (0-6) which specify the icon shown
 | AddTeleport(`HTMLPopup,Type,X,Y,Z,Region`) | - | Overload, using IC coords
 | AddPlayer(`PlayerID,HTMLPopup,PosX,PosY`) | - | Add Player marker
 | MovePlayer(`PlayerID,PosX,PosY`) | - | Moves a player by his ID, to the IC coords even through differents areas
 | MovePlayer(`PlayerID,X,Y,Z,Region`) | - | Overload, using IC coords
-| GoToPlayer(`PlayerID`) | `Boolean` | Set the view on Player with highlight, return `True` if the ID exists
+| GoToPlayer(`PlayerID`) | `Boolean` | Set the view on Player and highlight him, return `True` if the ID exists
 | RemovePlayer(`PlayerID`) | - | Removes the Player marker
 
 **Note:** The map accepts **GET** parameters, to share shortcut/link locations between users. Both coordinate types are supported and the link will be pointing the current map site.
 
-> The methods/functionalities not mentioned here are focused at user features. Explore the code for more info.
+> The methods and functionalities not mentioned here are focused at user features. Explore the code for more info.
 
 ---
 ### Generating Game Data (Any server)
 
-**1.-** To implement NPC's and Teleports for specific server, you should count with these essential files that can be extracted from **media.pk2** client file:
+**1.)** To implement NPC's and Teleports for specific server, you should count with these essential files that can be extracted from **media.pk2** client file:
 
 - **characterdata_all.txt**
 - **textdata_equip&skill_all.txt**
@@ -57,7 +57,7 @@ The easy way to explore the [**Silkroad Online**](http://www.joymax.com/silkroad
 - **teleportbuilding.txt**
 - **teleportlink.txt**
 
-`characterdata_all` is a compilation of multiples files, like:  
+`characterdata_all.txt` is a compilation of multiples files, like:  
 `characterdata_100.txt`  
 `characterdata_200.txt`  
 `characterdata_300.txt`  
@@ -66,24 +66,24 @@ The easy way to explore the [**Silkroad Online**](http://www.joymax.com/silkroad
 You should join them all into one big file to fill our requirements.  
 Please, keep in mind the files needs to be **lowercased** to get it work in the next step.
 
-Recommended to use _**CMD.exe**_ with `copy` command which merge multiple files magically.
+Recommended to use _**CMD.exe**_ with `copy` command which merge multiple files automagically.
 > `copy characterdata*.txt characterdata_all.txt`
 
-**2.-** Go to the following repository at **Repl.it**
+**2.)** Go to the following repository at **Repl.it**
 > https://repl.it/@JellyBitz/xSROMap-Gen
 
 .. and choose whatever option you think easier:
  
 > **1.-** Download **main.exe** from  
-> **2.-** Locate it the program at the same folder with all mentioned required files  
+> **2.-** Locate the program at the folder with all mentioned required files  
 > **3.-** Execute the program
 
-.
+
 > **1.-** Fork the repository  
 > **2.-** Upload and replace the required files  
 > **3.-** Click at RUN (green) button
 
-**3.-** If everything is right, you'll get new **.js** files, which has a *Copy&Paste* javascript variable.
+**3.)** If everything is right, you'll get new **.js** files, which has a *Copy&Paste* javascript variable.
 
 - **NPCs.js :**  
 Contains an object array. The object has as attributes:  
@@ -95,12 +95,12 @@ Contains an object array. The object has as attributes:
 `name` of the Gate  
 `x, z, y, region` from internal client coords position  
 `type` number [0-6] linked to the gate icon  
-`teleport` object array to the teleporting areas with `name` of the Area, and `x, z, y, region` from the spawn position
+`teleport` object array to the teleporting areas with `name` of the Area and `x, z, y, region` from the spawn position
 
 - **NPCsLinked.js :**  
-The same as **NPCs.js** but the objects also contains the attribute `teleport` explained above
+Same as **NPCs.js** but the objects also contains the attribute `teleport` explained above
 
-**4.-** Iterate the variable you need and add to the map.
+**4.)** Iterate the variable you need and add to the map.
 > Check [main.js](https://github.com/JellyBitz/xSROMap/blob/master/assets/js/main.js) for more code references.
 
 ### Upcoming

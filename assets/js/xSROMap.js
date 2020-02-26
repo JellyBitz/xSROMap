@@ -251,33 +251,19 @@ var xSROMap = function(){
 			// show popup
 			L.popup().setLatLng(e.latlng).setContent(copyLink+content).openOn(map);
 		});
-		// tracking all shapes created on the current layer
+		// tracking all shapes created with toolbar at the current layer
 		map.on('pm:create',function(e){
 			var shape = e.layer;
-			shape['xMap'] = {'layer':mapLayer,'type':e.shape};
-			mappingShapes[shape._leaflet_id] = shape;
+			shape['xMap'] = {'layer':mapLayer,'type':e.shape,'id':shape._leaflet_id};
+			// normalize
+			if(e.shape == "Line")
+				shape.xMap.type = "Polyline";
 
-			// add popup to marker types only
-			if(e.shape == 'Marker'){
-				shape.on('click',function(e){
-					// add game coords
-					var coord = CoordMapToSRO(e.latlng);
-					var content = '[<b> X:'+coord.x+" , Y:"+coord.y+" , Z:"+coord.z+" , Region: "+coord.region+' </b>]';
-					if(coord.region <= 32767)
-						content = "(<b> PosX:"+coord.posX+" , PosY:"+coord.posY+" </b>)<br>"+content;
-					// add leaflet ID to check differences quickly
-					content = '&lt; <b>Marker ID:'+shape._leaflet_id+"</b> &gt;<br>" + content;
-					L.popup().setLatLng(e.latlng).setContent(content).openOn(map);
-				});
-			}
-
-			// update shape if edited
-			shape.on('pm:edit',function(f){
-				mappingShapes[f.target._leaflet_id] = f.target;
-			});
+			addShapeEditListener(shape);
 		});
-		map.on('pm:remove',function(e){
-			delete mappingShapes[e.layer._leaflet_id];
+		// remove
+		map.on('pm:remove',function(f){
+			delete mappingShapes[f.layer.xMap.id];
 		});
 	};
 	var setInitialView = function(coord) {
@@ -396,7 +382,7 @@ var xSROMap = function(){
 		if(region < 0)
 			region += 65536;
 		// Check coord type
-		if(region == 0){
+		if(region == null){
 			// using x,y as game coords
 			return CoordsGameToSRO({'posX':x,'posY':y});
 		}
@@ -412,9 +398,38 @@ var xSROMap = function(){
 		document.execCommand('copy');
 		document.body.removeChild(e);
 	};
+	var addShapeEditListener = function(shape){
+		// create register
+		mappingShapes[shape.xMap.id] = shape;
+
+		// add popup to marker types only
+		if(shape == 'Marker'){
+			shape.on('click',function(e){
+				// add game coords
+				var coord = CoordMapToSRO(e.latlng);
+				var content = '[<b> X:'+coord.x+" , Y:"+coord.y+" , Z:"+coord.z+" , Region: "+coord.region+' </b>]';
+				if(coord.region <= 32767)
+					content = "(<b> PosX:"+coord.posX+" , PosY:"+coord.posY+" </b>)<br>"+content;
+				// add leaflet ID to check differences quickly
+				content = '&lt; <b>Marker ID:'+shape.xMap.id+"</b> &gt;<br>" + content;
+				L.popup().setLatLng(e.latlng).setContent(content).openOn(map);
+			});
+		}
+
+		// edit
+		shape.on('pm:edit',function(f){
+			mappingShapes[f.target.xMap.id] = f.target;
+		});
+
+		// polyline/polygons
+		shape.on('pm:vertexremoved',function(f){
+			if(f.target._latlngs.length == 0)
+				delete mappingShapes[f.target.xMap.id];
+		});
+	};
 	return{
 		// Initialize silkroad world map
-		init:function(id,x=114,y=47.25,z=0,region=0){
+		init:function(id,x=114,y=47.25,z=null,region=null){
 			// init stuffs
 			initLayers(id);
 			initControls();
@@ -435,7 +450,7 @@ var xSROMap = function(){
 			map.options.maxZoom = maxZoom;
 		},
 		// Set the view quickly
-		SetView:function(x,y,z=0,region=0){
+		SetView:function(x,y,z=null,region=null){
 			// Remove highlight if exists
 			if(lastMarkerSelected){
 				L.DomUtil.removeClass(lastMarkerSelected._icon, 'leaflet-marker-selected');
@@ -445,7 +460,7 @@ var xSROMap = function(){
 			setView(fixCoords(x,y,z,region));
 		},
 		// Set the view flying
-		FlyView:function(x,y,z=0,region=0){
+		FlyView:function(x,y,z=null,region=null){
 			// Remove highlight if exists
 			if(lastMarkerSelected){
 				L.DomUtil.removeClass(lastMarkerSelected._icon, 'leaflet-marker-selected');
@@ -454,7 +469,7 @@ var xSROMap = function(){
 			// view
 			flyView(fixCoords(x,y,z,region));
 		},
-		AddNPC(id,html,x,y,z=0,region=0){
+		AddNPC(id,html,x,y,z=null,region=null){
 			// Add only new ones
 			if(!mappingMarkers['npc'][id]){
 				var coord = fixCoords(x,y,z,region);
@@ -495,7 +510,7 @@ var xSROMap = function(){
 			}
 			return false;
 		},
-		AddTeleport(html,type,x,y,z=0,region=0){
+		AddTeleport(html,type,x,y,z=null,region=null){
 			var coord = fixCoords(x,y,z,region);
 			// create icon
 			var iconNPC;
@@ -534,7 +549,7 @@ var xSROMap = function(){
 			var id = Object.keys(mappingMarkers['tp']).length;
 			mappingMarkers['tp'][id] = marker;
 		},
-		AddPlayer(id,html,x,y,z=0,region=0){
+		AddPlayer(id,html,x,y,z=null,region=null){
 			// Add only new ones
 			if(!mappingMarkers['player'][id]){
 				var coord = fixCoords(x,y,z,region);
@@ -556,7 +571,7 @@ var xSROMap = function(){
 				mappingMarkers['player'][id] = marker;
 			}
 		},
-		MovePlayer(id,x,y,z=0,region=0){
+		MovePlayer(id,x,y,z=null,region=null){
 			var marker = mappingMarkers['player'][id];
 			// check if exists and has a valid layer
 			if(marker && marker.options.xMap.layer){
@@ -616,7 +631,7 @@ var xSROMap = function(){
 				delete mappingMarkers['player'][id]; 
 			}
 		},
-		LinkToClipboard(x,y,z=0,region=0){
+		LinkToClipboard(x,y,z=null,region=null){
 			var coord = fixCoords(x,y,z,region);
 			toClipboard(window.location.href.split(/\?|#/)[0]+'?x='+coord.x+'&y='+coord.y+'&z='+coord.z+'&region='+coord.region);
 		},
@@ -651,8 +666,52 @@ var xSROMap = function(){
 				removalMode:f
 			});
 		},
+		AddDrawingShape(type,param1,param2=null){
+			var shape;
+			switch(type){
+				case "Marker":
+					var coord = fixCoords(param1[0],param1[1],param1[2],param1[3]); 
+
+					shape = L.marker(CoordSROToMap(coord),{virtual:true});
+					shape['xMap'] = {layer:getLayer(coord)};
+					break;
+				case "Polyline":
+				case "Polygon":
+					var latlngs = [];
+					for (var i = 0; i < param1.length; i++)
+						latlngs.push(CoordSROToMap(fixCoords(param1[i][0],param1[i][1],param1[i][2],param1[i][3])));
+
+					shape = type == "Polyline"?L.polyline(latlngs,{virtual:true}):L.polygon(latlngs,{virtual:true});
+					shape['xMap'] = {layer:getLayer(fixCoords(param1[0][0],param1[0][1],param1[0][2],param1[0][3]))};
+					break;
+				case "Circle":
+					var coord = fixCoords(param1[0],param1[1],param1[2],param1[3]); 
+
+					shape = L.circle(CoordSROToMap(coord),param2/192,{virtual:true});
+					shape['xMap'] = {layer:getLayer(coord)};
+					break
+				default:
+					return;
+			}
+			shape.xMap["type"] = type;
+			shape.xMap["id"] = new Date().getUTCMilliseconds();
+			mappingShapes[shape.xMap.id] = shape;
+
+			// add
+			if(shape.xMap.layer == mapLayer)
+				shape.addTo(map);
+
+			addShapeEditListener(shape);
+		},
+		// Returns the all shapes from the current map layer
 		GetDrawingShapes(){
-			return mappingShapes;
+			var shapes = [];
+			for (var id in mappingShapes){
+				var shape = mappingShapes[id];
+				if(shape.xMap.layer == mapLayer)
+					shapes.push(shape);
+			}
+			return shapes;
 		},
 		ConvertLatLngToCoords(latlng){
 			return CoordMapToSRO(latlng);

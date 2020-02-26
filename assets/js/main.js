@@ -29,12 +29,12 @@ for(var i=0;i<TPs.length;i++)
 	xSROMap.AddTeleport(html,TPs[i].type,TPs[i].x,TPs[i].y,TPs[i].z,TPs[i].region);
 }
 // Player example
-xSROMap.AddPlayer(0,'<a href="#"><b>JellyBitz</b></a><br><i>Hi, I\'ll be here watching you!<br>And you can\'t do nothing about ... >:)</i>',116.75,117);
+xSROMap.AddPlayer("JellyBitz",'<a href="#"><b>JellyBitz</b></a><br><i>Hi, I\'ll be here watching you!<br>And you can\'t do nothing about ... >:)</i>',116.75,117);
 // Activate drawing creator
 xSROMap.ShowDrawingToolbar('topright',true,false,true,false,true,true,true,true,false,true);
 
 /*
- * Set sidebar actions
+ * Sidebar actions
  */
 
 // sidebar dropdown menu lv.1
@@ -164,18 +164,80 @@ window.onload = function(){
 	}
 };
 
-// Script Editor
-var ImportDrawingLayers = function(){
+/*
+ * Script Generator
+ */
 
+var ImportDrawingLayers = function(type=null){
+	var textarea = $("#textareaScriptEditor").val();
+	if(textarea == "")
+		return;
+	var lines = textarea.match(/[^\r\n]+/g);
+	// analyze script type
+	if(type == null){
+		for (var i = 0; i < lines.length; i++){
+			if (lines[i].startsWith("> Marker")){
+				// Check next line position
+				if(i+1 < lines.length){
+					var pos = lines[i+1].split(',');
+					if(pos.length >= 2 && pos[0].startsWith("PosX:") && pos[1].startsWith("PosY:")){
+						var posX = parseFloat(pos[0].substr(5));
+						var posY = parseFloat(pos[1].substr(5));
+						if(!isNaN(posX) && !isNaN(posY)){
+							xSROMap.AddDrawingShape("Marker",[posX,posY]);
+							i++;
+						}
+					}
+				}
+			}else if (lines[i].startsWith("> Polyline") || lines[i].startsWith("> Polygon") ){
+				var type = lines[i].startsWith("> Polyl")?"Polyline":"Polygon";
+				var coords = [];
+				// extract and leave the cursor when cannot continue
+				var j = i+1;
+				while(j < lines.length){
+					var pos = lines[j].split(',');
+					if(pos.length >= 2 && pos[0].startsWith("PosX:") && pos[1].startsWith("PosY:")){
+						var posX = parseFloat(pos[0].substr(5));
+						var posY = parseFloat(pos[1].substr(5));
+						if(!isNaN(posX) && !isNaN(posY)){
+							coords.push([posX,posY]);
+						}
+						j++;
+						i=j-1;
+					}
+					else {
+						break;
+					}
+				}
+				xSROMap.AddDrawingShape(type,coords);
+			}else if (lines[i].startsWith("> Circle")){
+				// Check next line position
+				if(i+1 < lines.length){
+					var pos = lines[i+1].split(',');
+					if(pos.length >= 2 && pos[0].startsWith("PosX:") && pos[1].startsWith("PosY:")){
+						var posX = parseFloat(pos[0].substr(5));
+						var posY = parseFloat(pos[1].substr(5));
+						if(!isNaN(posX) && !isNaN(posY)){
+							// Check next line radius
+							if(i+2 < lines.length && lines[i+2].startsWith("Radius:")){
+								var radius = parseFloat(lines[i+2].substr(7));
+								if(!isNaN(radius))
+									xSROMap.AddDrawingShape("Circle",[posX,posY],radius);
+									i+=2;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 };
 var ExportDrawingLayers = function(type=null){
 	var shapes = xSROMap.GetDrawingShapes();
-
 	var textarea = "";
 	
 	for (var id in shapes){
 		var shape = shapes[id];
-
 		// extract info depending on type
 		if(type == null){
 			switch(shape.xMap.type){
@@ -184,17 +246,17 @@ var ExportDrawingLayers = function(type=null){
 					
 					var coord = xSROMap.ConvertLatLngToCoords(shape._latlng);
 					if(coord.posX != null && coord.posY != null)
-						textarea += "PosX:"+coord.posX+",PosY:"+coord.posY+"\n";
+						textarea += "PosX:"+Math.round(coord.posX)+",PosY:"+Math.round(coord.posY)+"\n";
 					else
 						textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
 					break;
-				case "Line":
+				case "Polyline":
 					textarea += "> Polyline:\n";
 
 					for(var i=0;i<shape._latlngs.length;i++){
 						var coord = xSROMap.ConvertLatLngToCoords(shape._latlngs[i]);
 						if(coord.posX != null && coord.posY != null)
-							textarea += "PosX:"+coord.posX+",PosY:"+coord.posY+"\n";
+							textarea += "PosX:"+Math.round(coord.posX)+",PosY:"+Math.round(coord.posY)+"\n";
 						else
 							textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
 					}
@@ -205,7 +267,7 @@ var ExportDrawingLayers = function(type=null){
 					for(var i=0;i<shape._latlngs[0].length;i++){
 						var coord = xSROMap.ConvertLatLngToCoords(shape._latlngs[0][i]);
 						if(coord.posX != null && coord.posY != null)
-							textarea += "PosX:"+coord.posX+",PosY:"+coord.posY+"\n";
+							textarea += "PosX:"+Math.round(coord.posX)+",PosY:"+Math.round(coord.posY)+"\n";
 						else
 							textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
 					}
@@ -215,11 +277,11 @@ var ExportDrawingLayers = function(type=null){
 
 					var coord = xSROMap.ConvertLatLngToCoords(shape._latlng);
 					if(coord.posX != null && coord.posY != null)
-						textarea += "PosX:"+coord.posX+",PosY:"+coord.posY+"\n";
+						textarea += "PosX:"+Math.round(coord.posX)+",PosY:"+Math.round(coord.posY)+"\n";
 					else
 						textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
 
-					textarea += "Radius: "+Math.round(shape._mRadius*192,2)+"\n";
+					textarea += "Radius:"+Math.round(shape._mRadius*192,2)+"\n";
 					break;
 			}
 		}
