@@ -316,13 +316,15 @@ var ExportDrawingLayers = function(){
 	var shapes = xSROMap.GetDrawingShapes();
 	var textarea = "";
 
+	var type = $("#selectEditorType").val();
+	// default type
+	if(type.startsWith("--"))
+		type = null;
+	else
+		textarea = "We are sorry!\nExport is not ready to work with bots, not yet.";
+
 	for (var id in shapes){
 		var shape = shapes[id];
-
-		var type = $("#selectEditorType").val();
-		// default type
-		if(type.startsWith("--"))
-			type = null;
 
 		// extract info depending on type
 		if(type == null){
