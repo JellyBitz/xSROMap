@@ -168,12 +168,18 @@ window.onload = function(){
  * Script Generator
  */
 
-var ImportDrawingLayers = function(type=null){
+var ImportDrawingLayers = function(){
 	var textarea = $("#textareaScriptEditor").val();
 	if(textarea == "")
 		return;
+
 	var lines = textarea.match(/[^\r\n]+/g);
 	// analyze script type
+	var type = $("#selectEditorType").val();
+	// default type
+	if(type.startsWith("--"))
+		type = null;
+
 	if(type == null){
 		for (var i = 0; i < lines.length; i++){
 			if (lines[i].startsWith("> Marker")){
@@ -201,13 +207,11 @@ var ImportDrawingLayers = function(type=null){
 						var posY = parseFloat(pos[1].substr(5));
 						if(!isNaN(posX) && !isNaN(posY)){
 							coords.push([posX,posY]);
+							j++; i=j-1;
+							continue;
 						}
-						j++;
-						i=j-1;
 					}
-					else {
-						break;
-					}
+					break;
 				}
 				xSROMap.AddDrawingShape(type,coords);
 			}else if (lines[i].startsWith("> Circle")){
@@ -231,13 +235,95 @@ var ImportDrawingLayers = function(type=null){
 			}
 		}
 	}
+	else if(type=="sBot"){
+		// Add paths
+		var coords = [];
+		for (var i = 0; i < lines.length; i++){
+			if(lines[i].startsWith("teleport(")){
+				if(coords.length > 2)
+					xSROMap.AddDrawingShape("Polyline",coords);
+				coords = [];
+			}
+			else if(lines[i].startsWith("go("))
+			{
+				var coord = lines[i].substr(3).split(',');
+				if(coord.length == 2){
+					var x = parseFloat(coord[0]);
+					var y = parseFloat(coord[1]);
+					if(!isNaN(x) && !isNaN(y))
+						coords.push([x,y]);
+				}
+			}
+		}
+		if(coords.length > 2)
+			xSROMap.AddDrawingShape("Polyline",coords);
+	}
+	else if(type=="mBot"){
+		// Add paths
+		var coords = [];
+		for (var i = 0; i < lines.length; i++){
+			if(lines[i].startsWith("teleport,")){
+				if(coords.length > 2)
+					xSROMap.AddDrawingShape("Polyline",coords);
+				coords = [];
+			}
+			else if(lines[i].startsWith("go,"))
+			{
+				var coord = lines[i].split(',');
+				if(coord.length == 3){
+					var x = parseFloat(coord[1]);
+					var y = parseFloat(coord[2]);
+					if(!isNaN(x) && !isNaN(y))
+						coords.push([x,y]);
+				}
+			}
+		}
+		if(coords.length > 2)
+			xSROMap.AddDrawingShape("Polyline",coords);
+	}
+	else if(type=="phBot"){
+		// Add paths
+		var coords = [];
+		for (var i = 0; i < lines.length; i++){
+			if(lines[i].startsWith("teleport,")){
+				if(coords.length > 2)
+					xSROMap.AddDrawingShape("Polyline",coords);
+				coords = [];
+			}
+			else if(lines[i].startsWith("walk,"))
+			{
+				var coord = lines[i].split(',');
+				if(coord.length == 4){
+					var x = parseFloat(coord[1]);
+					var y = parseFloat(coord[2]);
+					if(!isNaN(x) && !isNaN(y))
+						coords.push([x,y]);
+				}else if(coord.length == 6){
+					var region =  (parseInt(coord[2]) << 8) | parseInt(coord[1]);
+					var x = parseFloat(coord[3]);
+					var y = parseFloat(coord[4]);
+					var z = parseFloat(coord[5]);
+					if(!isNaN(region) && !isNaN(x) && !isNaN(y) && !isNaN(z))
+						coords.push([x,y,z,region]);
+				}
+			}
+		}
+		if(coords.length > 2)
+			xSROMap.AddDrawingShape("Polyline",coords);
+	}
 };
-var ExportDrawingLayers = function(type=null){
+var ExportDrawingLayers = function(){
 	var shapes = xSROMap.GetDrawingShapes();
 	var textarea = "";
-	
+
 	for (var id in shapes){
 		var shape = shapes[id];
+
+		var type = $("#selectEditorType").val();
+		// default type
+		if(type.startsWith("--"))
+			type = null;
+
 		// extract info depending on type
 		if(type == null){
 			switch(shape.xMap.type){

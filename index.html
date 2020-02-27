@@ -49,7 +49,7 @@
 			<div class="sidebar-content">
 				<div class="sidebar-brand">
 					<a href="#"><span class="jelly-color">x</span>SROMap</a>
-					<span class="version"><span class="jelly-color">v</span>1.1.0</span>
+					<span class="version"><span class="jelly-color">v</span>1.2.0</span>
 				</div>
 				<div class="sidebar-header">
 					<div class="user-pic">
@@ -306,16 +306,26 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="lblScriptEditor">Script Editor</h5>
+						<h5 class="modal-title" id="lblScriptEditor">Script Editor (Lite)</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
-						<textarea class="form-control" id="textareaScriptEditor" rows="10"></textarea>
+						<div class="form-group">
+							<select class="form-control" id="selectEditorType">
+								<option>-- Select Platform --</option>
+								<option>sBot</option>
+								<option>mBot</option>
+								<option>phBot</option>
+							</select>
+						</div>
+						<div class="form-group">
+							<textarea class="form-control" id="textareaScriptEditor" rows="11"></textarea>
+						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-danger" onclick="xSROMap.ClearDrawingShapes()">Clear layers</button>
+						<button type="button" class="btn btn-danger" onclick="xSROMap.ClearDrawingShapes()">Clear Layers</button>
 						<button type="button" class="btn btn-secondary" onclick="ImportDrawingLayers()">Import</button>
 						<button type="button" class="btn btn-secondary" onclick="ExportDrawingLayers()">Export</button>
 					</div>

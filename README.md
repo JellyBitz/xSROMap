@@ -8,7 +8,7 @@ The easy way to explore the [**Silkroad Online**](http://www.joymax.com/silkroad
 - Teleport actions with NPC's included
 - Show coordinates by click
 - Zoom levels
-- Script creator (drawing toolbar)
+- Script editor (Create, Export, Import working even with bots)
 - Works on mobile devices
 
 > Are you looking for a [**DEMO**](http://JellyBitz.github.io/xSROMap)?
@@ -104,8 +104,7 @@ Same as **NPCs.js** but the objects also contains the attribute `teleport` expla
 > Check [main.js](https://github.com/JellyBitz/xSROMap/blob/master/assets/js/main.js) for more code references.
 
 ### Upcoming
-- Script editor (Load, Save, Edit)
-- Show/hide NPC's
+- Show/hide NPC's or Teleports
 
 ---
 > ### Do you like this project ?  

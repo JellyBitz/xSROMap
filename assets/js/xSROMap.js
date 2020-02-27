@@ -403,13 +403,13 @@ var xSROMap = function(){
 		mappingShapes[shape.xMap.id] = shape;
 
 		// add popup to marker types only
-		if(shape == 'Marker'){
+		if(shape.xMap.type == 'Marker'){
 			shape.on('click',function(e){
 				// add game coords
 				var coord = CoordMapToSRO(e.latlng);
 				var content = '[<b> X:'+coord.x+" , Y:"+coord.y+" , Z:"+coord.z+" , Region: "+coord.region+' </b>]';
 				if(coord.region <= 32767)
-					content = "(<b> PosX:"+coord.posX+" , PosY:"+coord.posY+" </b>)<br>"+content;
+					content = "(<b> PosX:"+Math.round(coord.posX)+" , PosY:"+Math.round(coord.posY)+" </b>)<br>"+content;
 				// add leaflet ID to check differences quickly
 				content = '&lt; <b>Marker ID:'+shape.xMap.id+"</b> &gt;<br>" + content;
 				L.popup().setLatLng(e.latlng).setContent(content).openOn(map);
