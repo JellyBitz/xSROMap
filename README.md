@@ -23,7 +23,7 @@ The easy way to explore the [**Silkroad Online**](http://www.joymax.com/silkroad
 | init(`TagID`) | - | Initialize the silkroad map at the specified html tag with viewpoint at Hotan
 | init(`TagID,PosX,PosY`) | - | Overload, with view at **in game** (**IG**) coords
 | init(`TagID,X,Y,Z,Region`) | - | Overload, with view at **internal client** (**IC**) coords
-| SetZoomLimit(`MinZoom,MaxZoom`) | - | Limit the zoom min. and max. Values [0-8]
+| SetZoomLimit(`MinZoom,MaxZoom`) | - | Limit the zoom min. and max. Values [0-9]
 | SetView(`PosX,PosY`) | - | Set the view instantly using IG coords
 | SetView(`X,Y,Z,Region`) | - | Overload, using IC coords
 | FlyView(`PosX,PosY`) | - | Set the view flying using IG coords
@@ -74,7 +74,7 @@ Recommended to use _**CMD.exe**_ with `copy` command which merge multiple files 
 
 .. and choose whatever option you think easier:
  
-> **1.-** Download **main.exe** from  
+> **1.-** Download **main.exe**  
 > **2.-** Locate the program at the folder with all mentioned required files  
 > **3.-** Execute the program
 

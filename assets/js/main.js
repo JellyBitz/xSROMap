@@ -186,7 +186,7 @@ var ImportDrawingLayers = function(){
 				// Check next line position
 				if(i+1 < lines.length){
 					var pos = lines[i+1].split(',');
-					if(pos.length >= 2 && pos[0].startsWith("PosX:") && pos[1].startsWith("PosY:")){
+					if(pos.length == 2 && pos[0].startsWith("PosX:") && pos[1].startsWith("PosY:")){
 						var posX = parseFloat(pos[0].substr(5));
 						var posY = parseFloat(pos[1].substr(5));
 						if(!isNaN(posX) && !isNaN(posY)){
@@ -194,15 +194,25 @@ var ImportDrawingLayers = function(){
 							i++;
 						}
 					}
+					else if(pos.length == 4 && pos[0].startsWith("X:") && pos[1].startsWith("Y:") && pos[2].startsWith("Z:") && pos[3].startsWith("Region:")){
+						var x = parseFloat(pos[0].substr(2));
+						var y = parseFloat(pos[1].substr(2));
+						var z = parseFloat(pos[2].substr(2));
+						var r = parseFloat(pos[3].substr(7));
+						if(!isNaN(x) && !isNaN(y) && !isNaN(z) && !isNaN(r)){
+							xSROMap.AddDrawingShape("Marker",[x,y,z,r]);
+							i++;
+						}
+					}
 				}
 			}else if (lines[i].startsWith("> Polyline") || lines[i].startsWith("> Polygon") ){
-				var type = lines[i].startsWith("> Polyl")?"Polyline":"Polygon";
+				var t = lines[i].startsWith("> Polyl")?"Polyline":"Polygon";
 				var coords = [];
 				// extract and leave the cursor when cannot continue
 				var j = i+1;
 				while(j < lines.length){
 					var pos = lines[j].split(',');
-					if(pos.length >= 2 && pos[0].startsWith("PosX:") && pos[1].startsWith("PosY:")){
+					if(pos.length == 2 && pos[0].startsWith("PosX:") && pos[1].startsWith("PosY:")){
 						var posX = parseFloat(pos[0].substr(5));
 						var posY = parseFloat(pos[1].substr(5));
 						if(!isNaN(posX) && !isNaN(posY)){
@@ -211,9 +221,20 @@ var ImportDrawingLayers = function(){
 							continue;
 						}
 					}
+					else if(pos.length == 4 && pos[0].startsWith("X:") && pos[1].startsWith("Y:") && pos[2].startsWith("Z:") && pos[3].startsWith("Region:")){
+						var x = parseFloat(pos[0].substr(2));
+						var y = parseFloat(pos[1].substr(2));
+						var z = parseFloat(pos[2].substr(2));
+						var r = parseFloat(pos[3].substr(7));
+						if(!isNaN(x) && !isNaN(y) && !isNaN(z) && !isNaN(r)){
+							coords.push([x,y,z,r]);
+							j++; i=j-1;
+							continue;
+						}
+					}
 					break;
 				}
-				xSROMap.AddDrawingShape(type,coords);
+				xSROMap.AddDrawingShape(t,coords);
 			}else if (lines[i].startsWith("> Circle")){
 				// Check next line position
 				if(i+1 < lines.length){
@@ -227,6 +248,21 @@ var ImportDrawingLayers = function(){
 								var radius = parseFloat(lines[i+2].substr(7));
 								if(!isNaN(radius))
 									xSROMap.AddDrawingShape("Circle",[posX,posY],radius);
+									i+=2;
+							}
+						}
+					}
+					else if(pos.length == 4 && pos[0].startsWith("X:") && pos[1].startsWith("Y:") && pos[2].startsWith("Z:") && pos[3].startsWith("Region:")){
+						var x = parseFloat(pos[0].substr(2));
+						var y = parseFloat(pos[1].substr(2));
+						var z = parseFloat(pos[2].substr(2));
+						var r = parseFloat(pos[3].substr(7));
+						if(!isNaN(x) && !isNaN(y) && !isNaN(z) && !isNaN(r)){
+							// Check next line radius
+							if(i+2 < lines.length && lines[i+2].startsWith("Radius:")){
+								var radius = parseFloat(lines[i+2].substr(7));
+								if(!isNaN(radius))
+									xSROMap.AddDrawingShape("Circle",[x,y,z,r],radius);
 									i+=2;
 							}
 						}
@@ -285,7 +321,7 @@ var ImportDrawingLayers = function(){
 		// Add paths
 		var coords = [];
 		for (var i = 0; i < lines.length; i++){
-			if(lines[i].startsWith("teleport,")){
+			if(lines[i].startsWith("teleport,") || lines[i].startsWith("wait,")){
 				if(coords.length > 2)
 					xSROMap.AddDrawingShape("Polyline",coords);
 				coords = [];
@@ -294,12 +330,21 @@ var ImportDrawingLayers = function(){
 			{
 				var coord = lines[i].split(',');
 				if(coord.length == 4){
-					var x = parseFloat(coord[1]);
-					var y = parseFloat(coord[2]);
-					if(!isNaN(x) && !isNaN(y))
-						coords.push([x,y]);
-				}else if(coord.length == 6){
-					var region =  (parseInt(coord[2]) << 8) | parseInt(coord[1]);
+					var posX = parseFloat(coord[1]);
+					var posY = parseFloat(coord[2]);
+					if(!isNaN(posX) && !isNaN(posY))
+						coords.push([posX,posY]);
+				}
+				else if(coord.length == 5){
+					var region = parseInt(coord[1]);
+					var x = parseFloat(coord[2]);
+					var y = parseFloat(coord[3]);
+					var z = parseFloat(coord[4]);
+					if(!isNaN(region) && !isNaN(x) && !isNaN(y) && !isNaN(z))
+						coords.push([x,y,z,region]);
+				}
+				else if(coord.length == 6){
+					var region = (parseInt(coord[2]) << 8) | parseInt(coord[1]);
 					var x = parseFloat(coord[3]);
 					var y = parseFloat(coord[4]);
 					var z = parseFloat(coord[5]);
@@ -320,57 +365,147 @@ var ExportDrawingLayers = function(){
 	// default type
 	if(type.startsWith("--"))
 		type = null;
-	else
-		textarea = "We are sorry!\nExport is not ready to work with bots, not yet.";
 
 	for (var id in shapes){
 		var shape = shapes[id];
 
-		// extract info depending on type
-		if(type == null){
+		// filter and extract script type
+		if(type == null)
+		{
 			switch(shape.xMap.type){
 				case "Marker":
-					textarea += "> Marker ID: "+shape._leaflet_id+"\n";
+				{
+					textarea += "> Marker ID:"+shape._leaflet_id+"\n";
 					
 					var coord = xSROMap.ConvertLatLngToCoords(shape._latlng);
-					if(coord.posX != null && coord.posY != null)
+					if(coord.posX != null)
 						textarea += "PosX:"+Math.round(coord.posX)+",PosY:"+Math.round(coord.posY)+"\n";
 					else
 						textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
-					break;
+				} break;
 				case "Polyline":
 					textarea += "> Polyline:\n";
+					var distance = 0;
+					var lastCoord;
 
 					for(var i=0;i<shape._latlngs.length;i++){
 						var coord = xSROMap.ConvertLatLngToCoords(shape._latlngs[i]);
-						if(coord.posX != null && coord.posY != null)
+						if(coord.posX != null){
 							textarea += "PosX:"+Math.round(coord.posX)+",PosY:"+Math.round(coord.posY)+"\n";
+							// calc distance at world map
+							if(lastCoord)
+								distance += Math.sqrt(Math.pow(lastCoord.posX-coord.posX,2)+Math.pow(lastCoord.posY-coord.posY,2));
+						}
 						else
+						{
 							textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
+							// calc distance at cave
+							if(lastCoord)
+								distance += Math.sqrt(Math.pow(lastCoord.x-coord.x,2)+Math.pow(lastCoord.y-coord.y,2));
+						}
+						lastCoord = coord;
 					}
+
+					textarea += "Total Distance: "+Math.round(distance,2)+"\n";
 					break;
 				case "Polygon":
 					textarea += "> Polygon:\n";
 
-					for(var i=0;i<shape._latlngs[0].length;i++){
-						var coord = xSROMap.ConvertLatLngToCoords(shape._latlngs[0][i]);
-						if(coord.posX != null && coord.posY != null)
+					for(var i=0;i<shape._latlngs.length;i++){
+						var coord = xSROMap.ConvertLatLngToCoords(shape._latlngs[i]);
+						if(coord.posX != null)
 							textarea += "PosX:"+Math.round(coord.posX)+",PosY:"+Math.round(coord.posY)+"\n";
 						else
 							textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
 					}
 					break;
 				case "Circle":
+				{
 					textarea += "> Circle:\n";
 
 					var coord = xSROMap.ConvertLatLngToCoords(shape._latlng);
-					if(coord.posX != null && coord.posY != null)
+					if(coord.posX != null)
 						textarea += "PosX:"+Math.round(coord.posX)+",PosY:"+Math.round(coord.posY)+"\n";
 					else
 						textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
 
 					textarea += "Radius:"+Math.round(shape._mRadius*192,2)+"\n";
+				} break;
+			}
+		}
+		else if(type == "sBot")
+		{
+			if(shape.xMap.type == "Polyline")
+			{
+				for(var i=0;i<shape._latlngs.length;i++){
+					var coord = xSROMap.ConvertLatLngToCoords(shape._latlngs[i]);
+					if(coord.posX != null)
+						textarea += "go("+Math.round(coord.posX)+","+Math.round(coord.posY)+")\n";
+					//else
+					//	textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
+				}
+			}
+		}
+		else if(type == "mBot")
+		{
+			if(shape.xMap.type == "Polyline")
+			{
+				for(var i=0;i<shape._latlngs.length;i++){
+					var coord = xSROMap.ConvertLatLngToCoords(shape._latlngs[i]);
+					if(coord.posX != null)
+						textarea += "walk,"+Math.round(coord.posX)+","+Math.round(coord.posY)+"\n";
+					//else
+					//	textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
+				}
+			}
+		}
+		else if(type == "phBot")
+		{
+			switch(shape.xMap.type){
+				case "Marker":
+				{
+					textarea += "// Marker - ID:"+shape._leaflet_id+"\n";
+
+					var coord = xSROMap.ConvertLatLngToCoords(shape._latlng);
+					if(coord.posX != null)
+						textarea += "// PosX:"+Math.round(coord.posX)+",PosY:"+Math.round(coord.posY)+"\n";
+					else
+						textarea += "// Region:"+(coord.region > 32767?coord.region-65536:coord.region)+",X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+"\n";
+				} break;
+				case "Polyline":
+					var distance = 0;
+					var lastCoord;
+					var path = "";
+
+					for(var i=0;i<shape._latlngs.length;i++){
+						var coord = xSROMap.ConvertLatLngToCoords(shape._latlngs[i]);
+						if(coord.posX != null){
+							path += "walk,"+Math.round(coord.posX)+","+Math.round(coord.posY)+",0\n";
+							// calc distance at world map
+							if(lastCoord)
+								distance += Math.sqrt(Math.pow(lastCoord.posX-coord.posX,2)+Math.pow(lastCoord.posY-coord.posY,2));
+						}
+						else{
+							path += "walk,"+(coord.region > 32767?coord.region-65536:coord.region)+","+coord.x+","+coord.y+","+coord.z+"\n";
+							// calc distance at cave
+							if(lastCoord)
+								distance += Math.sqrt(Math.pow(lastCoord.x-coord.x,2)+Math.pow(lastCoord.y-coord.y,2));
+						}
+						lastCoord = coord;
+					}
+
+					textarea += "// Polyline - Distance:"+Math.round(distance,2)+"\n"+path;
 					break;
+				case "Circle":
+				{
+					textarea += "// Circle - Radius:"+Math.round(shape._mRadius*192,2)+"\n";
+
+					var coord = xSROMap.ConvertLatLngToCoords(shape._latlng);
+					if(coord.posX != null)
+						textarea += "// PosX:"+Math.round(coord.posX)+",PosY:"+Math.round(coord.posY)+"\n";
+					else
+						textarea += "// Region:"+(coord.region > 32767?coord.region-65536:coord.region)+",X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+"\n";
+				} break;
 			}
 		}
 	}

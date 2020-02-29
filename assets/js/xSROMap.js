@@ -112,7 +112,7 @@ var xSROMap = function(){
 		// map base
 		map = L.map('map', {
 			crs: L.CRS.Simple,
-			minZoom:0,maxZoom:8,zoomControl:false
+			minZoom:0,maxZoom:9,zoomControl:false
 		});
 		new L.Control.Zoom({ position: 'topright' }).addTo(map);
 		// Fix circle drawing on CRS.Simple
@@ -439,7 +439,7 @@ var xSROMap = function(){
 		SetZoomLimit:function(minZoom,maxZoom){
 			// Check min max values
 			if(minZoom < 0) minZoom = 0;
-			if(maxZoom > 8) maxZoom = 8;
+			if(maxZoom > 9) maxZoom = 9;
 			// Check wrong values
 			if(minZoom > maxZoom){
 				var temp = minZoom;
