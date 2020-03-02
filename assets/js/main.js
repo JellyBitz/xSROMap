@@ -352,6 +352,17 @@ var ImportDrawingLayers = function(){
 						coords.push([x,y,z,region]);
 				}
 			}
+			else if(lines[i].startsWith("AttackArea"))
+			{
+				if(coords.length > 0){
+					var lastCoord = coords[coords.length-1]
+					var options = lines[i].split(',');
+					var radius = 45; // Silkroad spawn radius 45-65, approx.
+					if(options.length >= 2)
+						radius = parseFloat(options[1]);
+					xSROMap.AddDrawingShape("Circle",lastCoord,radius);
+				}
+			}
 		}
 		if(coords.length > 2)
 			xSROMap.AddDrawingShape("Polyline",coords);
