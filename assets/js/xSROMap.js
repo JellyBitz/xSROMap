@@ -283,12 +283,10 @@ var xSROMap = function(){
 		if(!isNaN(x) && !isNaN(y)){
 			var z = parseFloat(GET("z"));
 			var r = parseFloat(GET("region"));
-			if(!isNaN(z) && !isNaN(r)){
+			if(!isNaN(z) && !isNaN(r))
 				setView(fixCoords(x,y,z,r));
-			}
-			else{
-				setView(fixCoords(x,y,0,0));
-			}
+			else
+				setView(fixCoords(x,y));
 		}
 		else{
 			// Parameters not found, set predefined view

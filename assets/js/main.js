@@ -118,13 +118,13 @@ $('#search .input-group-append').click(function()
 		var x = parseFloat(searchCoordinates[0]);
 		var y = parseFloat(searchCoordinates[1]);
 		// x and y correctly parsed?
-		if(x != NaN && y != NaN){
+		if(!isNaN(x) && !isNaN(y)){
 			// check if is a region coordinate
 			if(searchCoordinates.length == 4){
 				var z = parseFloat(searchCoordinates[2]);
-				var region = parseFloat(searchCoordinates[3]);
-				if(z != NaN && region != NaN){
-					xSROMap.SetView(x,y,z,region);
+				var r = parseFloat(searchCoordinates[3]);
+				if(!isNaN(z) && !isNaN(r)){
+					xSROMap.SetView(x,y,z,r);
 				}
 			}else{
 				xSROMap.SetView(x,y);
