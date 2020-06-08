@@ -340,6 +340,12 @@ var ImportDrawingLayers = function(){
 					var x = parseFloat(coord[2]);
 					var y = parseFloat(coord[3]);
 					var z = parseFloat(coord[4]);
+					if (region < 0){
+						// phBot synchronization on dungeons
+						region += (65535+1);
+						x = 10 * (x - ((region & 0xFF) - 128) * 192 );
+						y = 10 * (y - ((region >> 8) - 128) * 192 );
+					}
 					if(!isNaN(region) && !isNaN(x) && !isNaN(y) && !isNaN(z))
 						coords.push([x,y,z,region]);
 				}
@@ -497,7 +503,13 @@ var ExportDrawingLayers = function(){
 								distance += Math.sqrt(Math.pow(lastCoord.posX-coord.posX,2)+Math.pow(lastCoord.posY-coord.posY,2));
 						}
 						else{
-							path += "walk,"+(coord.region > 32767?coord.region-65536:coord.region)+","+coord.x+","+coord.y+","+coord.z+"\n";
+							// phBot synchronization on dungeons
+							coord['posX'] = ((coord.region & 0xFF) - 128) * 192 + coord.x / 10;
+							coord['posY'] = ((coord.region >> 8) - 128) * 192 + coord.y / 10;
+							if (coord.region > 0)
+								coord.region -= (65535+1);
+
+							path += "walk,"+coord.region+","+Math.round(coord.posX)+","+Math.round(coord.posY)+","+coord.z+"\n";
 							// calc distance at cave
 							if(lastCoord)
 								distance += Math.sqrt(Math.pow(lastCoord.x-coord.x,2)+Math.pow(lastCoord.y-coord.y,2));
