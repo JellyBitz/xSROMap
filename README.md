@@ -67,7 +67,7 @@ You should join them all into one big file to fill our requirements.
 Please, keep in mind the files needs to be **lowercased** to get it work in the next step.
 
 Recommended to use _**CMD.exe**_ with `copy` command which merge multiple files automagically.
-> `copy characterdata*.txt characterdata_all.txt`
+> `copy /b characterdata*.txt characterdata_all.txt`
 
 **2.)** Go to the following repository at **Repl.it**
 > https://repl.it/@JellyBitz/xSROMap-Gen
