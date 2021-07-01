@@ -124,10 +124,10 @@ $('#search .input-group-append').click(function()
 				var z = parseFloat(searchCoordinates[2]);
 				var r = parseFloat(searchCoordinates[3]);
 				if(!isNaN(z) && !isNaN(r)){
-					xSROMap.SetView(x,y,z,r);
+					xSROMap.FlyView(x,y,z,r);
 				}
 			}else{
-				xSROMap.SetView(x,y);
+				xSROMap.FlyView(x,y);
 			}
 		}
 	}
