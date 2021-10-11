@@ -33,6 +33,12 @@ xSROMap.AddPlayer("JellyBitz",'<a href="#"><b>JellyBitz</b></a><br><i>Hi, I\'ll 
 // Activate drawing creator
 xSROMap.ShowDrawingToolbar('topright',true,false,true,false,true,true,true,true,false,true);
 
+// Examples about how to add shapes
+//xSROMap.AddDrawingShape('Marker',[113,-205],'<b>Hotan Kingdom (S)</b>');
+//xSROMap.AddDrawingShape('Polyline',[[115,255],[115,368],[115,428]],'<b>City to Palace</b>');
+//xSROMap.AddDrawingShape('Polygon',[[-91,131],[35,255],[208,254],[329,129],[331,-46],[210,-166],[34,-169],[-92,-40]],'<b>Hotan Kingdom</b>');
+//xSROMap.AddDrawingShape('Circle',[-66,228],25);
+
 /*
  * Sidebar actions
  */
@@ -190,7 +196,7 @@ var ImportDrawingLayers = function(){
 						var posX = parseFloat(pos[0].substr(5));
 						var posY = parseFloat(pos[1].substr(5));
 						if(!isNaN(posX) && !isNaN(posY)){
-							xSROMap.AddDrawingShape("Marker",[posX,posY]);
+							xSROMap.AddDrawingShape("Marker",[posX,posY],lines[i].substr(9));
 							i++;
 						}
 					}
@@ -200,14 +206,15 @@ var ImportDrawingLayers = function(){
 						var z = parseFloat(pos[2].substr(2));
 						var r = parseFloat(pos[3].substr(7));
 						if(!isNaN(x) && !isNaN(y) && !isNaN(z) && !isNaN(r)){
-							xSROMap.AddDrawingShape("Marker",[x,y,z,r]);
+							xSROMap.AddDrawingShape("Marker",[x,y,z,r],lines[i].substr(9));
 							i++;
 						}
 					}
 				}
-			}else if (lines[i].startsWith("> Polyline") || lines[i].startsWith("> Polygon") ){
+			}else if (lines[i].startsWith("> Polyline") || lines[i].startsWith("> Polygon")){
 				var t = lines[i].startsWith("> Polyl")?"Polyline":"Polygon";
 				var coords = [];
+				var param2 = lines[i].substr(t.length+3);
 				// extract and leave the cursor when cannot continue
 				var j = i+1;
 				while(j < lines.length){
@@ -234,7 +241,7 @@ var ImportDrawingLayers = function(){
 					}
 					break;
 				}
-				xSROMap.AddDrawingShape(t,coords);
+				xSROMap.AddDrawingShape(t,coords,param2);
 			}else if (lines[i].startsWith("> Circle")){
 				// Check next line position
 				if(i+1 < lines.length){
@@ -427,9 +434,10 @@ var ExportDrawingLayers = function(){
 					break;
 				case "Polygon":
 					textarea += "> Polygon:\n";
+					console.log(shape);
 
-					for(var i=0;i<shape._latlngs.length;i++){
-						var coord = xSROMap.ConvertLatLngToCoords(shape._latlngs[i]);
+					for(var i=0;i<shape._latlngs[0].length;i++){
+						var coord = xSROMap.ConvertLatLngToCoords(shape._latlngs[0][i]);
 						if(coord.posX != null)
 							textarea += "PosX:"+Math.round(coord.posX)+",PosY:"+Math.round(coord.posY)+"\n";
 						else

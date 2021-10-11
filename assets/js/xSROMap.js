@@ -240,7 +240,7 @@ var xSROMap = function(){
 	};
 	var initEvents = function(){
 		// show SRO coordinates on click
-		map.on('click', function (e){
+		map.on('dblclick', function (e){
 			// add game coords
 			var coord = CoordMapToSRO(e.latlng);
 			var content = '[<b> X:'+coord.x+" , Y:"+coord.y+" , Z:"+coord.z+" , Region: "+coord.region+' </b>]';
@@ -409,9 +409,19 @@ var xSROMap = function(){
 				if(coord.region <= 32767)
 					content = "(<b> PosX:"+Math.round(coord.posX)+" , PosY:"+Math.round(coord.posY)+" </b>)<br>"+content;
 				// add leaflet ID to check differences quickly
-				content = '&lt; <b>Marker ID:'+shape.xMap.id+"</b> &gt;<br>" + content;
+				content = (shape.xMap.desc?shape.xMap.desc:'<b>&lt; Marker ID:'+shape.xMap.id+' &gt;</b>')+'<br>' + content;
 				L.popup().setLatLng(e.latlng).setContent(content).openOn(map);
 			});
+		}
+		else if(shape.xMap.type == 'Polygon' || shape.xMap.type == 'Polyline')
+		{
+			if(shape.xMap.desc)
+			{
+				shape.on('click',function(e)
+				{
+					L.popup().setLatLng(e.latlng).setContent(shape.xMap.desc).openOn(map);
+				});
+			}
 		}
 
 		// edit
@@ -672,15 +682,20 @@ var xSROMap = function(){
 
 					shape = L.marker(CoordSROToMap(coord),{virtual:true});
 					shape['xMap'] = {layer:getLayer(coord)};
+					// Add shape description
+					if(param2 != null)
+						shape['xMap']['desc'] = param2;
 					break;
 				case "Polyline":
 				case "Polygon":
 					var latlngs = [];
 					for (var i = 0; i < param1.length; i++)
 						latlngs.push(CoordSROToMap(fixCoords(param1[i][0],param1[i][1],param1[i][2],param1[i][3])));
-
 					shape = type == "Polyline"?L.polyline(latlngs,{virtual:true}):L.polygon(latlngs,{virtual:true});
 					shape['xMap'] = {layer:getLayer(fixCoords(param1[0][0],param1[0][1],param1[0][2],param1[0][3]))};
+					// Add shape description
+					if(param2 != null)
+						shape['xMap']['desc'] = param2;
 					break;
 				case "Circle":
 					var coord = fixCoords(param1[0],param1[1],param1[2],param1[3]); 
