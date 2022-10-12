@@ -59,7 +59,8 @@ var xSROMap = function(){
 	var mappingMarkers = {
 		'npc':{},
 		'tp':{},
-		'player':{}
+		'player':{},
+		'location':{}
 	};
 	var mappingShapes = {};
 	// xSRO Map conversions
@@ -637,6 +638,46 @@ var xSROMap = function(){
 				}
 				// delete from register
 				delete mappingMarkers['player'][id]; 
+			}
+		},
+		AddLocation(id,html,x,y,z=null,region=null){
+			// Add only new ones
+			if(!mappingMarkers['location'][id]){
+				var coord = fixCoords(x,y,z,region);
+				// create dimensions
+				var icon = new L.Icon({
+					iconUrl: imgHost+'icon/wmap_sign_location.gif',
+					iconSize:	[36,36],
+					iconAnchor:	[18,24],
+					popupAnchor:[-1,-16]
+				});
+				// create marker virtualized
+				var marker = L.marker(CoordSROToMap(coord),{icon:icon,pmIgnore:true,virtual:true});
+				// Add html popup
+				if(html !== "")
+					marker = marker.bindPopup(html);
+				// Check if is from the current layer
+				var layer = getLayer(coord);
+				if(layer == mapLayer)
+					marker.addTo(map);
+				marker.options['xMap'] = {"layer":layer,'coordinates':coord};
+				// keep register to not get lost on changing layers
+				mappingMarkers['location'][id] = marker;
+			}
+		},
+		RemoveLocation(id){
+			var marker = mappingMarkers['location'][id];
+			if(marker && marker.options.xMap.layer){
+				// delete from the current layer
+				if (marker.options.xMap.layer == mapLayer){
+					// Goes through every object and remove it
+					map.eachLayer(function(layer){
+						if(layer == marker)
+							map.removeLayer(layer);
+					});
+				}
+				// delete from register
+				delete mappingMarkers['location'][id]; 
 			}
 		},
 		LinkToClipboard(x,y,z=null,region=null){

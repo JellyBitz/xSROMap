@@ -116,6 +116,7 @@ $('#search input[type="text"]').keyup(function()
 	});	
 });
 // Coordinate search on click/enter
+searchId = 0
 $('#search .input-group-append').click(function()
 {
 	var searchCoordinates = $('#search input[type="text"]').val().split(',');
@@ -131,9 +132,13 @@ $('#search .input-group-append').click(function()
 				var r = parseFloat(searchCoordinates[3]);
 				if(!isNaN(z) && !isNaN(r)){
 					xSROMap.SetView(x,y,z,r);
+					// Add visual reference
+					xSROMap.AddLocation(searchId,'<a href="#" onclick="xSROMap.RemoveLocation('+(searchId++)+')">Remove <i class="fa fa-thrash-check"></i></a>',x,y,z,r);
 				}
 			}else{
 				xSROMap.SetView(x,y);
+				// Add visual reference
+				xSROMap.AddLocation(searchId,'<a href="#" onclick="xSROMap.RemoveLocation('+(searchId++)+')">Remove <i class="fa fa-thrash-check"></i></a>',x,y);
 			}
 		}
 	}
