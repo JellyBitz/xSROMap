@@ -407,10 +407,7 @@ var ExportDrawingLayers = function(){
 					textarea += "> Marker ID:"+shape._leaflet_id+"\n";
 					
 					var coord = xSROMap.ConvertLatLngToCoords(shape._latlng);
-					if(coord.posX != null)
-						textarea += "PosX:"+Math.round(coord.posX)+",PosY:"+Math.round(coord.posY)+"\n";
-					else
-						textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
+					textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
 				} break;
 				case "Polyline":
 					textarea += "> Polyline:\n";
@@ -419,18 +416,17 @@ var ExportDrawingLayers = function(){
 
 					for(var i=0;i<shape._latlngs.length;i++){
 						var coord = xSROMap.ConvertLatLngToCoords(shape._latlngs[i]);
+						textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
 						if(coord.posX != null){
-							textarea += "PosX:"+Math.round(coord.posX)+",PosY:"+Math.round(coord.posY)+"\n";
 							// calc distance at world map
 							if(lastCoord)
 								distance += Math.sqrt(Math.pow(lastCoord.posX-coord.posX,2)+Math.pow(lastCoord.posY-coord.posY,2));
 						}
 						else
 						{
-							textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
 							// calc distance at cave
 							if(lastCoord)
-								distance += Math.sqrt(Math.pow(lastCoord.x-coord.x,2)+Math.pow(lastCoord.y-coord.y,2));
+								distance += Math.sqrt(Math.pow(lastCoord.x-coord.x,2)+Math.pow(lastCoord.y-coord.y,2)) / 10;
 						}
 						lastCoord = coord;
 					}
@@ -443,10 +439,7 @@ var ExportDrawingLayers = function(){
 
 					for(var i=0;i<shape._latlngs[0].length;i++){
 						var coord = xSROMap.ConvertLatLngToCoords(shape._latlngs[0][i]);
-						if(coord.posX != null)
-							textarea += "PosX:"+Math.round(coord.posX)+",PosY:"+Math.round(coord.posY)+"\n";
-						else
-							textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
+						textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
 					}
 					break;
 				case "Circle":
@@ -454,10 +447,7 @@ var ExportDrawingLayers = function(){
 					textarea += "> Circle:\n";
 
 					var coord = xSROMap.ConvertLatLngToCoords(shape._latlng);
-					if(coord.posX != null)
-						textarea += "PosX:"+Math.round(coord.posX)+",PosY:"+Math.round(coord.posY)+"\n";
-					else
-						textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
+					textarea += "X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+",Region:"+coord.region+"\n";
 
 					textarea += "Radius:"+Math.round(shape._mRadius*192,2)+"\n";
 				} break;
