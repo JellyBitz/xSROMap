@@ -479,6 +479,20 @@ var ExportDrawingLayers = function(){
 				}
 			}
 		}
+		else if (type == "RSBot")
+		{
+			if (shape.xMap.type == "Polyline") {
+				for (var i = 0; i < shape._latlngs.length; i++) {
+					var coord = xSROMap.ConvertLatLngToCoords(shape._latlngs[i]);
+					if (coord.posX != null)
+						textarea += "move " + Math.round(coord.x) + " " + Math.round(coord.y) + " 0 " + coord.xsec + " " + coord.ysec + "\n";
+				}
+			}
+			else if (shape.xMap.type == "Circle") {
+				var coord = xSROMap.ConvertLatLngToCoords(shape._latlng);
+				textarea += "area " + Math.round(coord.posX) + " " + Math.round(coord.posY) + " " + Math.floor(shape._mRadius * 192) + "\n";
+            }
+        }
 		else if(type == "phBot")
 		{
 			switch(shape.xMap.type){
