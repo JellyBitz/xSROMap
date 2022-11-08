@@ -303,7 +303,7 @@ var ImportDrawingLayers = function(){
 				}
 			}
 		}
-		if(coords.length > 2)
+		if(coords.length >= 2)
 			xSROMap.AddDrawingShape("Polyline",coords);
 	}
 	else if(type=="mBot"){
@@ -326,7 +326,7 @@ var ImportDrawingLayers = function(){
 				}
 			}
 		}
-		if(coords.length > 2)
+		if(coords.length >= 2)
 			xSROMap.AddDrawingShape("Polyline",coords);
 	}
 	else if(type=="phBot"){
@@ -362,12 +362,15 @@ var ImportDrawingLayers = function(){
 						coords.push([x,y,z,region]);
 				}
 				else if(coord.length == 6){
-					var region = (parseInt(coord[2]) << 8) | parseInt(coord[1]);
+					var xsec = parseInt(coord[1]);
+					var ysec = parseInt(coord[2]);
 					var x = parseFloat(coord[3]);
 					var y = parseFloat(coord[4]);
 					var z = parseFloat(coord[5]);
-					if(!isNaN(region) && !isNaN(x) && !isNaN(y) && !isNaN(z))
+					if(!isNaN(x) && !isNaN(y) && !isNaN(z) && !isNaN(xsec) && !isNaN(ysec)){
+						var region = (ysec << 8) | xsec;
 						coords.push([x,y,z,region]);
+					}
 				}
 			}
 			else if(lines[i].startsWith("AttackArea"))
@@ -382,7 +385,30 @@ var ImportDrawingLayers = function(){
 				}
 			}
 		}
-		if(coords.length > 2)
+		if(coords.length >= 2)
+			xSROMap.AddDrawingShape("Polyline",coords);
+	}
+	else if(type=="RSBot"){
+		// Add paths
+		var coords = [];
+		for (var i = 0; i < lines.length; i++){
+			if(lines[i].startsWith("move "))
+			{
+				var data = lines[i].split(' ');
+				if(data.length == 6){
+					var x = parseFloat(data[1]);
+					var y = parseFloat(data[2]);
+					var z = parseFloat(data[3]);
+					var xsec = parseInt(data[4]);
+					var ysec = parseInt(data[5]);
+					if(!isNaN(x) && !isNaN(y) && !isNaN(z) && !isNaN(xsec) && !isNaN(ysec)){
+						var region = (ysec << 8) | xsec;
+						coords.push([x,y,z,region]);
+					}
+				}
+			}
+		}
+		if(coords.length >= 2)
 			xSROMap.AddDrawingShape("Polyline",coords);
 	}
 };
@@ -532,6 +558,24 @@ var ExportDrawingLayers = function(){
 					else
 						textarea += "// Region:"+(coord.region > 32767?coord.region-65536:coord.region)+",X:"+coord.x+",Y:"+coord.y+",Z:"+coord.z+"\n";
 				} break;
+			}
+		}
+		else if (type == "RSBot")
+		{
+			if (shape.xMap.type == "Polyline"){
+				for (var i=0;i<shape._latlngs.length;i++){
+					var coord = xSROMap.ConvertLatLngToCoords(shape._latlngs[i]);
+					xsec = coord.region & 0xFF;
+					ysec = coord.region >> 8;
+					textarea += "move "+Math.round(coord.x)+" "+Math.round(coord.y)+" "+Math.round(coord.z)+" "+xsec+" "+ysec+"\n";
+				}
+			}
+			else if (shape.xMap.type == "Circle"){
+				var coord = xSROMap.ConvertLatLngToCoords(shape._latlng);
+				if(coord.posX != null)
+					textarea += "area "+Math.round(coord.posX)+" "+Math.round(coord.posY)+" "+Math.floor(shape._mRadius*192)+"\n";
+				else
+					textarea += "area "+Math.round(coord.x)+" "+Math.round(coord.y)+" "+Math.floor(shape._mRadius*192)+"\n";
 			}
 		}
 	}

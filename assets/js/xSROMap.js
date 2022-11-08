@@ -106,6 +106,7 @@ var xSROMap = function(){
 		var ySector = Math.round((gameCoords.posY - gameCoords.y / 10.0) / 192.0 + 92);
 
 		gameCoords['region'] = (ySector << 8) | xSector;
+
 		return gameCoords;
 	};
 	// initialize layer setup
