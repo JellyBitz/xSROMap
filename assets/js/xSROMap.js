@@ -245,7 +245,7 @@ var xSROMap = function(){
 		map.on('dblclick', function (e){
 			// add game coords
 			var coord = CoordMapToSRO(e.latlng);
-			var content = '[<b> X:'+coord.x+" , Y:"+coord.y+" , Z:"+coord.z+" , Region: "+coord.region+' ('+(coord.region&0xFF)+','+(coord.region>>8)+')</b>]';
+			var content = '[<b> X:'+coord.x+" , Y:"+coord.y+" , Z:"+coord.z+" , Region: "+coord.region+ (coord.region<=32767?' ('+(coord.region&0xFF)+','+(coord.region>>8)+')':'')+' </b>]';
 			if(coord.region <= 32767)
 				content = "(<b> PosX:"+coord.posX+" , PosY:"+coord.posY+" </b>)<br>"+content;
 			// link shortcut
