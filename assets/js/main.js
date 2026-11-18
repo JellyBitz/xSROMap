@@ -169,9 +169,15 @@ window.onload = function(){
 		var r = parseFloat(GET("region"));
 		// Show link
 		if(!isNaN(z) && !isNaN(r))
+		{
 			$('#search input[type="text"]').val(x+","+y+","+z+","+r);
+			xSROMap.AddLocation(searchId,'<a href="#" onclick="xSROMap.RemoveLocation('+(searchId++)+')">Remove <i class="fa fa-thrash-check"></i></a>',x,y,z,r);
+		}
 		else
+		{
 			$('#search input[type="text"]').val(x+","+y);
+			xSROMap.AddLocation(searchId,'<a href="#" onclick="xSROMap.RemoveLocation('+(searchId++)+')">Remove <i class="fa fa-thrash-check"></i></a>',x,y);
+		}
 	}
 };
 
